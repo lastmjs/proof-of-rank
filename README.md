@@ -1,1 +1,1 @@
-# link-marine-rank
+# Proof of Rank
