@@ -1,0 +1,6 @@
+{
+    "compilerType": "solcjs",
+    "compilerVersion": "0.4.12",
+    "sourceDirectory": "./node_modules/link_token/contracts",
+    "outputDirectory": "./build"
+  }

@@ -22,7 +22,7 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-pragma solidity ^0.6.6;
+pragma solidity 0.6.6;
 
 // TODO use the correct abbreviations: https://marineparents.com/marinecorps/ranks.asp
 // Proof of Rank - Private, PRANK-PRIV
@@ -52,9 +52,8 @@ pragma solidity ^0.6.6;
 // TODO study solidity security
 // TODO find premade audits and things
 
-import { ERC721 } from 'https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol';
-import { Counters } from 'https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Counters.sol';
-// import { LinkToken } from 'https://github.com/smartcontractkit/LinkToken/blob/master/contracts/LinkToken.sol';
+import { ERC721 } from '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import { Counters } from '@openzeppelin/contracts/utils/Counters.sol';
 
 contract ProofOfRank is ERC721 {
     
@@ -62,7 +61,8 @@ contract ProofOfRank is ERC721 {
     address public generalOfChainlink; // TODO make sure we do not have weird 0 address problems
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
-    address public linkAddress = 0x20fE562d797A42Dcb3399062AE9546cd06f63280;
+    address public linkAddress;
+    // address public linkAddress = 0x20fE562d797A42Dcb3399062AE9546cd06f63280; // TODO this is the ropsten network link address
     // address public constant linkAddress = 0x514910771AF9Ca656af840dff83E8264EcF986CA; // TODO this is the main network link address
     
     struct PrankConfig {
@@ -74,146 +74,144 @@ contract ProofOfRank is ERC721 {
     }
     
     mapping (uint256 => uint256) public prankConfigIndexForTokens;
+    mapping (uint256 => PrankConfig) public prankConfigs;
     
-    PrankConfig[] public prankConfigs; // TODO should this be an array or a mapping?
-    
-    constructor() ERC721('Proof of Rank', 'PRANK') public {
-        owner = msg.sender;
+    constructor(address _linkAddress) ERC721('Proof of Rank', 'PRANK') public {
+        owner = msg.sender; // TODO look into how open zeppelin does their owner stuff
+        linkAddress = _linkAddress;
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[0] = PrankConfig({
             rank: 'Private',
             linkRequirement: 1e18,
             price: 1e18,
             tokenURI: 'https://proofofrank.link/token-uris/private.json'
-        }));
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[1] = PrankConfig({
             rank: 'Specialist',
             linkRequirement: 501e18,
             price: 1e18,
             tokenURI: 'https://proofofrank.link/token-uris/specialist.json'
-        }));
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[2] = PrankConfig({
             rank: 'Corporal',
             linkRequirement: 1501e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/corporal.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[3] = PrankConfig({
             rank: 'Sergeant',
             linkRequirement: 3501e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/sergeant.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[4] = PrankConfig({
             rank: 'Staff Sergeant',
             linkRequirement: 5001e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/staff-sergeant.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[5] = PrankConfig({
             rank: 'Sergeant First Class',
             linkRequirement: 7501e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/sergeant-first-class.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[6] = PrankConfig({
             rank: 'Master Sergeant',
             linkRequirement: 9001e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/master-sergeant.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[7] = PrankConfig({
             rank: 'Sergeant Major',
             linkRequirement: 10001e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/sergeant-major.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[8] = PrankConfig({
             rank: 'Second Lieutenant',
             linkRequirement: 15001e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/second-lieutenant.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[9] = PrankConfig({
             rank: 'First Lieutenant',
             linkRequirement: 20001e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/first-lieutenant.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[10] = PrankConfig({
             rank: 'Captain',
             linkRequirement: 25001e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/captain.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[11] = PrankConfig({
             rank: 'Major',
             linkRequirement: 35001e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/major.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[12] = PrankConfig({
             rank: 'Lieutenant Colonel',
             linkRequirement: 50001e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/lieutenant-colonel.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[13] = PrankConfig({
             rank: 'Colonel',
             linkRequirement: 75001e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/colonel.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[14] = PrankConfig({
             rank: 'Brigadier General',
             linkRequirement: 125001e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/brigadier-general.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[15] = PrankConfig({
             rank: 'Major General',
             linkRequirement: 175001e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/major-general.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[16] = PrankConfig({
             rank: 'Lieutenant General',
             linkRequirement: 2500001e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/lieutenant-general.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[17] = PrankConfig({
             rank: 'General',
             linkRequirement: 500001e18,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
+            tokenURI: 'https://proofofrank.link/token-uris/general.json'
+        });
         
-        prankConfigs.push(PrankConfig({
+        prankConfigs[18] = PrankConfig({
             rank: 'General of Chainlink',
             linkRequirement: 0,
             price: 1e18,
-            tokenURI: 'https://upload.wikimedia.org/wikipedia/commons/1/17/USMC-E2.svg'
-        }));
-        
-        // TODO I am not sure what to do with the general of chainlink token...only one person can ever own it
+            tokenURI: 'https://proofofrank.link/token-uris/general-of-chainlink.json'
+        });
     }
     
     function onTokenTransfer(address from, uint256 amount, bytes memory data) public returns (bool success) {
@@ -257,7 +255,7 @@ contract ProofOfRank is ERC721 {
     }
     
     function withdraw(address to, uint256 amount) public returns (bool success) {
-        require(msg.sender == owner);
+        require(msg.sender == owner, 'Only the owner can withdraw funds');
         
         LinkToken linkToken = LinkToken(linkAddress);
         
@@ -308,6 +306,7 @@ contract ProofOfRank is ERC721 {
         return true;
     }
     
+    // TODO look into how open zeppelin does owner stuff, we might want to reuse their thing
     function changeOwner(address newOwner) public returns (bool success) {
         require(msg.sender == owner);
         
@@ -330,8 +329,26 @@ contract ProofOfRank is ERC721 {
     }
 }
 
+// TODO should I import the true link interface?
 interface LinkToken {
     function balanceOf(address account) external view returns (uint);
     function transfer(address to, uint256 value) external returns (bool success);
-    function transferAndCall(address to, uint256 value, bytes memory data) external returns (bool success); // TODO this is just here so that I can easily call this from remix
+    function transferAndCall(address to, uint256 value, bytes calldata data) external returns (bool success); // TODO this is just here so that I can easily call this from remix
 }
+
+// TODO should I import the true link interface?
+// TODO is this good enough? Or should I be importing this?
+// contract LinkToken {
+//     // function allowance(address owner, address spender) returns (bool success);
+//     // function approve(address spender, uint256 value) returns (bool success);
+//     function balanceOf(address owner) returns (uint256 balance);
+//     // function decimals() returns (uint8 decimalPlaces);
+//     // function decreaseApproval(address spender, uint256 addedValue) reutrns (bool success);
+//     // function increaseApproval(address spender, uint256 subtractedValue);
+//     // function name() returns (string tokenName);
+//     // function symbol() returns (string tokenSymbol);
+//     // function totalSupply() returns (uint256 totalTokensIssued);
+//     function transfer(address to, uint256 value) returns (bool success);
+//     function transferAndCall(address to, uint256 value, bytes memory data) returns (bool success);
+//     // function transferFrom(address from, address to, uint256 value) returns (bool success);
+// }
