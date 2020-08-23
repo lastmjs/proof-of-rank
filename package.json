@@ -3,10 +3,12 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "start": "zwitterion --port 7340",
+    "start": "npm run compile-contracts && concurrently \"npm run ethereum-server\" \"zwitterion --port 7340\"",
+    "ethereum-server": "ts-node --transpile-only ethereum-server/ganache-server.ts",
+    "compile-contracts": "npm run compile-proof-of-rank && npm run compile-link-token",
     "compile-proof-of-rank": "waffle waffle-proof-of-rank.json",
     "compile-link-token": "waffle waffle-link-token.json",
-    "test": "npm run compile-proof-of-rank && npm run compile-link-token && mocha --timeout 1000000000 --require ts-node/register tests/**"
+    "test": "npm run compile-contracts && mocha --timeout 1000000000 --require ts-node/register tests/**"
   },
   "repository": {
     "type": "git",
@@ -29,12 +31,13 @@
     "@types/chai": "4.2.12",
     "@types/mocha": "8.0.3",
     "chai": "4.2.0",
+    "concurrently": "5.3.0",
     "ethereum-waffle": "3.0.2",
     "fast-check": "2.2.0",
     "link_token": "git+https://github.com/smartcontractkit/LinkToken.git",
     "mocha": "8.1.1",
     "ts-node": "8.10.2",
-    "typescript": "4.0.2",
+    "typescript": "3.9.7",
     "zwitterion": "0.45.0"
   }
 }

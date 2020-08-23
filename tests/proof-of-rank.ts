@@ -12,19 +12,20 @@ import {
     expect,
     use
 } from 'chai';
-import ProofOfRank from '../build/ProofOfRank.json';
-import LinkToken from '../build/LinkToken.json';
 import * as fc from 'fast-check';
 import 'mocha';
+import { deployContracts } from '../utilities/utilities';
 
 use(solidity);
 
+// TODO seems like ethers can do a lot of this for me...even the deploy contracts is working, using just the deployContract from waffle
+// TODO consider if I need the mock provider I suppose...I wonder if I could just use ganache and an ethers jsonrpc provider
 describe('ProofOfRank', () => {
     const provider = new MockProvider({
         ganacheOptions: {
             gasLimit: 12000000 // TODO is this an incorrect gas limit?
         }
-    })
+    });
 
     // TODO instead lets just call create empty wallet inside of an arbitrary
     const wallets = provider.getWallets();
@@ -59,6 +60,13 @@ describe('ProofOfRank', () => {
             expect(prankConfig1.linkRequirement.toString()).to.equal('501000000000000000000');
             expect(prankConfig1.price.toString()).to.equal('1000000000000000000');
             expect(prankConfig1.tokenURI).to.equal('https://proofofrank.link/token-uris/specialist.json');
+
+            const prankConfig2 = await proofOfRank.prankConfigs(2);
+
+            expect(prankConfig2.rank).to.equal('Corporal');
+            expect(prankConfig2.linkRequirement.toString()).to.equal('1501000000000000000000');
+            expect(prankConfig2.price.toString()).to.equal('1000000000000000000');
+            expect(prankConfig2.tokenURI).to.equal('https://proofofrank.link/token-uris/corporal.json');
 
             // const prankConfig2 = await proofOfRank.prankConfigs(2);
             // const prankConfig3 = await proofOfRank.prankConfigs(3);
@@ -139,28 +147,3 @@ describe('ProofOfRank', () => {
     // TODO consider if we need to do all of the other tests for ERC721...
     // TODO strictly review the open zeppelin erc721 code and review my code
 });
-
-// TODO we need to deploy these contracts together now, because they depend on each other
-// TODO we need to pass the link token address into the proof of rank contract
-async function deployContracts(linkOwner: Wallet, proofOfRankOwner: Wallet) {
-    const linkToken = await deployContract(linkOwner, LinkToken, [], {
-        gasLimit: 10000000
-    });
-    const proofOfRank = await deployContract(proofOfRankOwner, ProofOfRank, [linkToken.address], {
-        gasLimit: 10000000
-    });
-
-    return {
-        linkToken,
-        proofOfRank
-    };
-}
-
-// async function deployLinkToken(wallet: Wallet) {
-//     const linkToken = await deployContract(wallet, LinkToken, [], {
-//         gasLimit: 10000000, // TODO am I setting the gas limit correctly?
-//         gasPrice: 0    
-//     });
-
-//     return linkToken;
-// }

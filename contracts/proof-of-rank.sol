@@ -59,9 +59,10 @@ contract ProofOfRank is ERC721 {
     
     address public owner; // TODO should I keep this public or private?
     address public generalOfChainlink; // TODO make sure we do not have weird 0 address problems
+    address public linkAddress;
+    
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
-    address public linkAddress;
     // address public linkAddress = 0x20fE562d797A42Dcb3399062AE9546cd06f63280; // TODO this is the ropsten network link address
     // address public constant linkAddress = 0x514910771AF9Ca656af840dff83E8264EcF986CA; // TODO this is the main network link address
     
@@ -70,11 +71,12 @@ contract ProofOfRank is ERC721 {
         uint256 linkRequirement;
         uint256 price;
         string tokenURI;
-        mapping (address => bool) marines; // TODO it would be great if this were somehow an array or something with a length so that we could easily see how many of each rank there were
+        mapping (address => bool) marines;
+        uint256 numMarines;
     }
     
-    mapping (uint256 => uint256) public prankConfigIndexForTokens;
     mapping (uint256 => PrankConfig) public prankConfigs;
+    mapping (uint256 => PrankConfig) public prankConfigsForTokenIds;
     
     constructor(address _linkAddress) ERC721('Proof of Rank', 'PRANK') public {
         owner = msg.sender; // TODO look into how open zeppelin does their owner stuff
@@ -84,133 +86,152 @@ contract ProofOfRank is ERC721 {
             rank: 'Private',
             linkRequirement: 1e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/private.json'
+            tokenURI: 'https://proofofrank.link/token-uris/private.json',
+            numMarines: 0
         });
         
         prankConfigs[1] = PrankConfig({
             rank: 'Specialist',
             linkRequirement: 501e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/specialist.json'
+            tokenURI: 'https://proofofrank.link/token-uris/specialist.json',
+            numMarines: 0
         });
         
         prankConfigs[2] = PrankConfig({
             rank: 'Corporal',
             linkRequirement: 1501e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/corporal.json'
+            tokenURI: 'https://proofofrank.link/token-uris/corporal.json',
+            numMarines: 0
         });
         
         prankConfigs[3] = PrankConfig({
             rank: 'Sergeant',
             linkRequirement: 3501e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/sergeant.json'
+            tokenURI: 'https://proofofrank.link/token-uris/sergeant.json',
+            numMarines: 0
         });
         
         prankConfigs[4] = PrankConfig({
             rank: 'Staff Sergeant',
             linkRequirement: 5001e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/staff-sergeant.json'
+            tokenURI: 'https://proofofrank.link/token-uris/staff-sergeant.json',
+            numMarines: 0
         });
         
         prankConfigs[5] = PrankConfig({
             rank: 'Sergeant First Class',
             linkRequirement: 7501e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/sergeant-first-class.json'
+            tokenURI: 'https://proofofrank.link/token-uris/sergeant-first-class.json',
+            numMarines: 0
         });
         
         prankConfigs[6] = PrankConfig({
             rank: 'Master Sergeant',
             linkRequirement: 9001e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/master-sergeant.json'
+            tokenURI: 'https://proofofrank.link/token-uris/master-sergeant.json',
+            numMarines: 0
         });
         
         prankConfigs[7] = PrankConfig({
             rank: 'Sergeant Major',
             linkRequirement: 10001e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/sergeant-major.json'
+            tokenURI: 'https://proofofrank.link/token-uris/sergeant-major.json',
+            numMarines: 0
         });
         
         prankConfigs[8] = PrankConfig({
             rank: 'Second Lieutenant',
             linkRequirement: 15001e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/second-lieutenant.json'
+            tokenURI: 'https://proofofrank.link/token-uris/second-lieutenant.json',
+            numMarines: 0
         });
         
         prankConfigs[9] = PrankConfig({
             rank: 'First Lieutenant',
             linkRequirement: 20001e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/first-lieutenant.json'
+            tokenURI: 'https://proofofrank.link/token-uris/first-lieutenant.json',
+            numMarines: 0
         });
         
         prankConfigs[10] = PrankConfig({
             rank: 'Captain',
             linkRequirement: 25001e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/captain.json'
+            tokenURI: 'https://proofofrank.link/token-uris/captain.json',
+            numMarines: 0
         });
         
         prankConfigs[11] = PrankConfig({
             rank: 'Major',
             linkRequirement: 35001e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/major.json'
+            tokenURI: 'https://proofofrank.link/token-uris/major.json',
+            numMarines: 0
         });
         
         prankConfigs[12] = PrankConfig({
             rank: 'Lieutenant Colonel',
             linkRequirement: 50001e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/lieutenant-colonel.json'
+            tokenURI: 'https://proofofrank.link/token-uris/lieutenant-colonel.json',
+            numMarines: 0
         });
         
         prankConfigs[13] = PrankConfig({
             rank: 'Colonel',
             linkRequirement: 75001e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/colonel.json'
+            tokenURI: 'https://proofofrank.link/token-uris/colonel.json',
+            numMarines: 0
         });
         
         prankConfigs[14] = PrankConfig({
             rank: 'Brigadier General',
             linkRequirement: 125001e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/brigadier-general.json'
+            tokenURI: 'https://proofofrank.link/token-uris/brigadier-general.json',
+            numMarines: 0
         });
         
         prankConfigs[15] = PrankConfig({
             rank: 'Major General',
             linkRequirement: 175001e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/major-general.json'
+            tokenURI: 'https://proofofrank.link/token-uris/major-general.json',
+            numMarines: 0
         });
         
         prankConfigs[16] = PrankConfig({
             rank: 'Lieutenant General',
             linkRequirement: 2500001e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/lieutenant-general.json'
+            tokenURI: 'https://proofofrank.link/token-uris/lieutenant-general.json',
+            numMarines: 0
         });
         
         prankConfigs[17] = PrankConfig({
             rank: 'General',
             linkRequirement: 500001e18,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/general.json'
+            tokenURI: 'https://proofofrank.link/token-uris/general.json',
+            numMarines: 0
         });
         
         prankConfigs[18] = PrankConfig({
             rank: 'General of Chainlink',
             linkRequirement: 0,
             price: 1e18,
-            tokenURI: 'https://proofofrank.link/token-uris/general-of-chainlink.json'
+            tokenURI: 'https://proofofrank.link/token-uris/general-of-chainlink.json',
+            numMarines: 0
         });
     }
     
@@ -242,14 +263,15 @@ contract ProofOfRank is ERC721 {
         // The General of Chainlink address is manually set by the owner of the contract
         require(data.length == 18 ? from == generalOfChainlink : true, 'You are not the General of Chainlink');
         
-        _tokenIds.increment();
+        _tokenIds.increment(); // TODO do we need to protect against this number getting too big?
         
         uint256 newItemId = _tokenIds.current();
         _mint(from, newItemId);
         _setTokenURI(newItemId, tokenURI);
         
-        prankConfigIndexForTokens[newItemId] = data.length;
+        prankConfigsForTokenIds[newItemId] = prankConfig;
         prankConfig.marines[from] = true;
+        prankConfig.numMarines += 1; // TODO do we need to protect against this number getting too big?
         
         return true;
     }
