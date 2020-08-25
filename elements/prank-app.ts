@@ -253,15 +253,186 @@ class PRANKApp extends HTMLElement {
     render(state: Readonly<State>): Readonly<TemplateResult> {
         console.log(state);
         return html`
-            <h1>Proof of Rank Beta</h1>
+            <style>
+                html {
+                    margin: 0;
+                }
+
+                body {
+                    margin: 0;
+                }
+
+                .prank-app-hexagon-container {
+                    font-size: 300px;
+                    color: grey;
+                    position: relative;
+                    font-family: monospace;
+                    line-height: 225px;
+                    text-shadow: 2px 2px 8px black;
+                    cursor: pointer;
+                }
+
+                .prank-app-hexagon-text {
+                    line-height: normal;
+                    color: white;
+                    font-size: 25px;
+                    position: absolute;
+                    text-shadow: none;
+                    text-align: center;
+                    top: 55px;
+                    word-spacing: 100vw;
+                    left: 0px;
+                    right: 0px;
+                }
+            </style>
+
             <button @click=${() => this.connectToMetaMask()} ?hidden=${state.ownerAddress !== ''}>Connect to MetaMask</button>
 
-            <div style="display: flex">
-                ${Object.values(state.pranks).map((prank) => {
-                    return html`
-                        <div style="width: 100px; height: 100px; border: solid 1px black; padding: 25px; color: ${prank.tokenId === 'NOT_SET' ? 'grey' : 'black'}">${prank.rank}</div>
-                    `;
-                })}
+            <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center">
+                <div style="display: flex">
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            General of Chainlink
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex">
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Brigadier General
+                        </div>
+                    </div>
+
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Major General
+                        </div>
+                    </div>
+
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Lieutenant General
+                        </div>
+                    </div>
+
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            General
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex">
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Major
+                        </div>
+                    </div>
+
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Lieutenant Colonel
+                        </div>
+                    </div>
+
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Colonel
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex">
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Sergeant Major
+                        </div>
+                    </div>
+
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Second Lieutenant
+                        </div>
+                    </div>
+
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            First Lieutenant
+                        </div>
+                    </div>
+
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Captain
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex">
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Staff Sergeant
+                        </div>
+                    </div>
+
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Sergeant First Class
+                        </div>
+                    </div>
+
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Master Sergeant
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex">
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Private
+                        </div>
+                    </div>
+
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Specialist
+                        </div>
+                    </div>
+
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Corporal
+                        </div>
+                    </div>
+
+                    <div class="prank-app-hexagon-container">
+                        &#x2B22;
+                        <div class="prank-app-hexagon-text">
+                            Sergeant
+                        </div>
+                    </div>
+                </div>
             </div>
         `;
     }
