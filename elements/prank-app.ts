@@ -279,7 +279,8 @@ class PRANKApp extends HTMLElement {
                     position: absolute;
                     text-shadow: none;
                     text-align: center;
-                    top: 55px;
+                    top: 50%;
+                    transform: translateY(-50%);
                     word-spacing: 100vw;
                     left: 0px;
                     right: 0px;
