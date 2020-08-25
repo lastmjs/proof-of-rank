@@ -264,11 +264,16 @@ class PRANKApp extends HTMLElement {
 
                 .prank-app-hexagon-container {
                     font-size: 300px;
-                    color: grey;
                     position: relative;
                     font-family: monospace;
                     line-height: 225px;
                     cursor: pointer;
+                    text-shadow: 2px 2px 8px black;
+                    color: grey;
+                }
+
+                .prank-app-proof-hexagon-container-color {
+                    color: #375bd2;
                 }
 
                 .prank-app-hexagon-text-container {
@@ -282,6 +287,12 @@ class PRANKApp extends HTMLElement {
                     word-spacing: 100vw;
                     left: 0px;
                     right: 0px;
+                    color: rgba(191, 191, 191, 1);
+                }
+
+                .prank-app-proof-hexagon-text {
+                    color: white;
+                    font-weight: bold;
                 }
 
                 .prank-app-hexagon-rank-text {
@@ -292,64 +303,48 @@ class PRANKApp extends HTMLElement {
                     font-size: 15px;
                     word-spacing: 0px;
                 }
-
-                .prank-app-proof-text-color {
-                    color: white;
-                }
-
-                .prank-app-no-proof-text-color {
-                    color: rgba(191, 191, 191, 1);
-                }
-
-                .prank-app-proof-hexagon-text-shadow {
-                    text-shadow: 2px 2px 8px blue;
-                }
-
-                .prank-app-no-proof-hexagon-text-shadow {
-                    text-shadow: 2px 2px 8px black;
-                }
             </style>
 
             <button @click=${() => this.connectToMetaMask()} ?hidden=${state.ownerAddress !== ''}>Connect to MetaMask</button>
 
             <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center">
                 <div style="display: flex">
-                    <div class="prank-app-hexagon-container ${state.pranks['General of Chainlink'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['General of Chainlink'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['General of Chainlink'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['General of Chainlink'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div>General of Chainlink</div>
                         </div>
                     </div>
                 </div>
 
                 <div style="display: flex">
-                    <div class="prank-app-hexagon-container ${state.pranks['Brigadier General'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Brigadier General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Brigadier General'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Brigadier General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Brigadier General</div>
                             <div class="prank-app-hexagon-link-text">125001 – 175000 LINK</div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Major General'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Major General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Major General'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Major General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Major General</div>
                             <div class="prank-app-hexagon-link-text">175001 – 250000 LINK</div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Lieutenant General'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Lieutenant General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Lieutenant General'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Lieutenant General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Lieutenant General</div>
                             <div class="prank-app-hexagon-link-text">2500001 – 500000 LINK</div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['General'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['General'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">General</div>
                             <div class="prank-app-hexagon-link-text">500001 + LINK</div>
                         </div>
@@ -357,25 +352,25 @@ class PRANKApp extends HTMLElement {
                 </div>
 
                 <div style="display: flex">
-                    <div class="prank-app-hexagon-container ${state.pranks['Major'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Major'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Major'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Major'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Major</div>
                             <div class="prank-app-hexagon-link-text">35001 – 50000 LINK</div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Lieutenant Colonel'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Lieutenant Colonel'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Lieutenant Colonel'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Lieutenant Colonel'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Lieutenant Colonel</div>
                             <div class="prank-app-hexagon-link-text">50001 – 75000 LINK</div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Colonel'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Colonel'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Colonel'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Colonel'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Colonel</div>
                             <div class="prank-app-hexagon-link-text">75001 – 125000 LINK</div>
                         </div>
@@ -383,33 +378,33 @@ class PRANKApp extends HTMLElement {
                 </div>
 
                 <div style="display: flex">
-                    <div class="prank-app-hexagon-container ${state.pranks['Sergeant Major'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Sergeant Major'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Sergeant Major'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Sergeant Major'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Sergeant Major</div>
                             <div class="prank-app-hexagon-link-text">10001 – 15000 LINK</div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Second Lieutenant'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Second Lieutenant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Second Lieutenant'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Second Lieutenant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Second Lieutenant</div>
                             <div class="prank-app-hexagon-link-text">15001 – 20000 LINK</div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['First Lieutenant'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['First Lieutenant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['First Lieutenant'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['First Lieutenant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">First Lieutenant</div>
                             <div class="prank-app-hexagon-link-text">20001 – 25000 LINK</div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Captain'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Captain'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Captain'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Captain'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Captain</div>
                             <div class="prank-app-hexagon-link-text">25001 – 35000 LINK</div>
                         </div>
@@ -417,25 +412,25 @@ class PRANKApp extends HTMLElement {
                 </div>
 
                 <div style="display: flex">
-                    <div class="prank-app-hexagon-container ${state.pranks['Staff Sergeant'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Staff Sergeant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Staff Sergeant'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Staff Sergeant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Staff Sergeant</div>
                             <div class="prank-app-hexagon-link-text">5001 – 7500 LINK</div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Sergeant First Class'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Sergeant First Class'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Sergeant First Class'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Sergeant First Class'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Sergeant First Class</div>
                             <div class="prank-app-hexagon-link-text">7501 – 9000 LINK</div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Master Sergeant'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Master Sergeant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Master Sergeant'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Master Sergeant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Master Sergeant</div>
                             <div class="prank-app-hexagon-link-text">9001 – 10000 LINK</div>
                         </div>
@@ -443,33 +438,33 @@ class PRANKApp extends HTMLElement {
                 </div>
 
                 <div style="display: flex">
-                    <div class="prank-app-hexagon-container ${state.pranks['Private'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Private'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Private'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Private'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Private</div>
                             <div class="prank-app-hexagon-link-text">1 – 500 LINK</div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Specialist'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Specialist'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Specialist'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Specialist'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Specialist</div>
                             <div class="prank-app-hexagon-link-text">501 – 1500 LINK</div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Corporal'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Corporal'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Corporal'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Corporal'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Corporal</div>
                             <div class="prank-app-hexagon-link-text">1501 – 3500 LINK</div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Sergeant'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-hexagon-text-shadow' : 'prank-app-proof-hexagon-text-shadow'}">
+                    <div class="prank-app-hexagon-container ${state.pranks['Sergeant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
                         &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Sergeant'].tokenId === 'NOT_SET' ? 'prank-app-no-proof-text-color' : 'prank-app-proof-text-color'}">
+                        <div class="prank-app-hexagon-text-container ${state.pranks['Sergeant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">Sergeant</div>
                             <div class="prank-app-hexagon-link-text">3501 – 5000 LINK</div>
                         </div>
