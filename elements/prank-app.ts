@@ -299,6 +299,7 @@ class PRANKApp extends HTMLElement {
         }
     }
 
+    // TODO create mobile layout...simply make the hexagons bigger and change the flex direction to column and add some padding between rows
     render(state: Readonly<State>): Readonly<TemplateResult> {
         console.log(state);
         return html`
