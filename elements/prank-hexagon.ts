@@ -50,6 +50,7 @@ class PRANKHexagon extends HTMLElement {
                     font-size: 300px;
                     font-family: monospace;
                     backface-visibility: hidden;
+                    transform-style: preserve-3d;
                 }
 
                 .prank-app-hexagon-front {
