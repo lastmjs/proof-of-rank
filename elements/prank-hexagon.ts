@@ -56,7 +56,6 @@ class PRANKHexagon extends HTMLElement {
                 .prank-app-hexagon-front {
                     color: grey;
                     text-shadow: 2px 2px 8px black;
-                    transform: rotateY(0deg);
                 }
 
                 .prank-app-hexagon-front-proof {
@@ -80,6 +79,7 @@ class PRANKHexagon extends HTMLElement {
                     left: 0px;
                     right: 0px;
                     color: rgba(191, 191, 191, 1);
+                    backface-visibility:hidden;
                 }
 
                 .prank-app-proof-hexagon-text {
