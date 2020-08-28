@@ -51,11 +51,11 @@ class PRANKHexagon extends HTMLElement {
                     font-family: monospace;
                     backface-visibility: hidden;
                     transform-style: preserve-3d;
+                    text-shadow: 2px 2px 8px black;
                 }
 
                 .prank-app-hexagon-front {
                     color: grey;
-                    text-shadow: 2px 2px 8px black;
                 }
 
                 .prank-app-hexagon-front-proof {
@@ -68,18 +68,18 @@ class PRANKHexagon extends HTMLElement {
                 }
 
                 .prank-app-hexagon-text-container {
+                    position: absolute;
                     line-height: normal;
                     font-size: 25px;
-                    position: absolute;
+                    word-spacing: 100vw;
                     text-shadow: none;
+                    color: rgba(191, 191, 191, 1);
+                    backface-visibility:hidden;
                     text-align: center;
                     top: 50%;
                     transform: translateY(-50%);
-                    word-spacing: 100vw;
                     left: 0px;
                     right: 0px;
-                    color: rgba(191, 191, 191, 1);
-                    backface-visibility:hidden;
                 }
 
                 .prank-app-proof-hexagon-text {
