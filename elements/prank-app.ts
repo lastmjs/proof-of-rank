@@ -5,6 +5,7 @@ import {
     TemplateResult
 } from 'lit-html';
 import { createObjectStore } from 'reduxular';
+import './prank-hexagon';
 
 type Rank = 'Private' | 'Specialist';
 type Address = string;
@@ -13,102 +14,121 @@ type State = {
     readonly linkTokenAddress: Address;
     readonly proofOfRankAddress: Address;
     readonly ownerAddress: Address;
-    readonly provider: Readonly<ethers.providers.Web3Provider>;
+    readonly provider: Readonly<ethers.providers.Web3Provider> | 'NOT_SET';
     readonly pranks: {
         'Private': {
             readonly rank: 'Private';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '1 – 500 LINK';
         };
         'Specialist': {
             readonly rank: 'Specialist';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '501 – 1500 LINK';
         };
         'Corporal': {
             readonly rank: 'Corporal';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '1501 – 3500 LINK';
         };
         'Sergeant': {
             readonly rank: 'Sergeant';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '3501 – 5000 LINK';
         };
         'Staff Sergeant': {
             readonly rank: 'Staff Sergeant';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '5001 – 7500 LINK';
         };
         'Sergeant First Class': {
             readonly rank: 'Sergeant First Class';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '7501 – 9000 LINK';
         };
         'Master Sergeant': {
             readonly rank: 'Master Sergeant';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '9001 – 10000 LINK';
         };
         'Sergeant Major': {
             readonly rank: 'Sergeant Major';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '10001 – 15000 LINK';
         };
         'Second Lieutenant': {
             readonly rank: 'Second Lieutenant';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '15001 – 20000 LINK';
         };
         'First Lieutenant': {
             readonly rank: 'First Lieutenant';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '20001 – 25000 LINK';
         };
         'Captain': {
             readonly rank: 'Captain';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '25001 – 35000 LINK';
         };
         'Major': {
             readonly rank: 'Major';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '35001 – 50000 LINK';
         };
         'Lieutenant Colonel': {
             readonly rank: 'Lieutenant Colonel';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '50001 – 75000 LINK';
         };
         'Colonel': {
             readonly rank: 'Colonel';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '75001 – 125000 LINK';
         };
         'Brigadier General': {
             readonly rank: 'Brigadier General';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '125001 – 175000 LINK';
         };
         'Major General': {
             readonly rank: 'Major General';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '175001 – 250000 LINK';
         };
         'Lieutenant General': {
             readonly rank: 'Lieutenant General';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '2500001 – 500000 LINK';
         };
         'General': {
             readonly rank: 'General';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: '500001 + LINK';
         };
         'General of Chainlink': {
             readonly rank: 'General of Chainlink';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly linkRange: 'NOT_SET';
         };
     };
 };
@@ -117,102 +137,121 @@ const InitialState: Readonly<State> = {
     linkTokenAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
     proofOfRankAddress: '0x54421e7a0325cCbf6b8F3A28F9c176C77343b7db',
     ownerAddress: '',
-    provider: new ethers.providers.Web3Provider(window.ethereum),
+    provider: (window as any).ethereum ? new ethers.providers.Web3Provider((window as any).ethereum) : 'NOT_SET', // TODO should we check to make sure that window.ethereum is defined? Yes, yes we should. We do not want this to break on browsers that do not have metamask installed, instead we want to help them to get MetaMask installed
     pranks: {
         'Private': {
             rank: 'Private',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '1 – 500 LINK'
         },
         'Specialist': {
             rank: 'Specialist',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '501 – 1500 LINK'
         },
         'Corporal': {
             rank: 'Corporal',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '1501 – 3500 LINK'
         },
         'Sergeant': {
             rank: 'Sergeant',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '3501 – 5000 LINK'
         },
         'Staff Sergeant': {
             rank: 'Staff Sergeant',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '5001 – 7500 LINK'
         },
         'Sergeant First Class': {
             rank: 'Sergeant First Class',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '7501 – 9000 LINK'
         },
         'Master Sergeant': {
             rank: 'Master Sergeant',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '9001 – 10000 LINK'
         },
         'Sergeant Major': {
             rank: 'Sergeant Major',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '10001 – 15000 LINK'
         },
         'Second Lieutenant': {
             rank: 'Second Lieutenant',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '15001 – 20000 LINK'
         },
         'First Lieutenant': {
             rank: 'First Lieutenant',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '20001 – 25000 LINK'
         },
         'Captain': {
             rank: 'Captain',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '25001 – 35000 LINK'
         },
         'Major': {
             rank: 'Major',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '35001 – 50000 LINK'
         },
         'Lieutenant Colonel': {
             rank: 'Lieutenant Colonel',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '50001 – 75000 LINK'
         },
         'Colonel': {
             rank: 'Colonel',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '75001 – 125000 LINK'
         },
         'Brigadier General': {
             rank: 'Brigadier General',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '125001 – 175000 LINK'
         },
         'Major General': {
             rank: 'Major General',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '175001 – 250000 LINK'
         },
         'Lieutenant General': {
             rank: 'Lieutenant General',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '2500001 – 500000 LINK'
         },
         'General': {
             rank: 'General',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: '500001 + LINK'
         },
         'General of Chainlink': {
             rank: 'General of Chainlink',
             tokenURI: 'NOT_SET',
-            tokenId: 'NOT_SET'
+            tokenId: 'NOT_SET',
+            linkRange: 'NOT_SET'
         }
     },
 };
@@ -224,7 +263,7 @@ class PRANKApp extends HTMLElement {
     constructor() {
         super();
 
-        this.store.ownerAddress = window.ethereum.selectedAddress === null ? '' : window.ethereum.selectedAddress;
+        this.store.ownerAddress = (window as any).ethereum?.selectedAddress === null || (window as any).ethereum?.selectedAddress === undefined ? '' : (window as any).ethereum.selectedAddress;
 
         if (this.store.ownerAddress !== '') {
             this.getPranks();
@@ -250,6 +289,16 @@ class PRANKApp extends HTMLElement {
         }
     }
 
+    async hexagonClick(prank: Prank) {
+        if (prank.tokenId === 'NOT_SET') {
+            const confirmed = confirm(`You are about to obtain 1 PRANK token. The cost is 1 LINK.`);
+            // TODO do a metamask transaction
+        }
+        else {
+            // TODO show large image suitable for sharing on social media
+        }
+    }
+
     render(state: Readonly<State>): Readonly<TemplateResult> {
         console.log(state);
         return html`
@@ -262,213 +311,148 @@ class PRANKApp extends HTMLElement {
                     margin: 0;
                 }
 
-                .prank-app-hexagon-container {
-                    font-size: 300px;
-                    position: relative;
-                    font-family: monospace;
-                    line-height: 225px;
-                    cursor: pointer;
-                    text-shadow: 2px 2px 8px black;
-                    color: grey;
+                .prank-app-main-hexagon-column {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
                 }
 
-                .prank-app-proof-hexagon-container-color {
-                    color: #375bd2;
-                }
-
-                .prank-app-hexagon-text-container {
-                    line-height: normal;
-                    font-size: 25px;
-                    position: absolute;
-                    text-shadow: none;
-                    text-align: center;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    word-spacing: 100vw;
-                    left: 0px;
-                    right: 0px;
-                    color: rgba(191, 191, 191, 1);
-                }
-
-                .prank-app-proof-hexagon-text {
-                    color: white;
-                    font-weight: bold;
-                }
-
-                .prank-app-hexagon-rank-text {
-                    margin-bottom: 15px;
-                }
-
-                .prank-app-hexagon-link-text {
-                    font-size: 15px;
-                    word-spacing: 0px;
+                .prank-app-hexagon-row {
+                    display: flex;
                 }
             </style>
 
             <button @click=${() => this.connectToMetaMask()} ?hidden=${state.ownerAddress !== ''}>Connect to MetaMask</button>
 
-            <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center">
-                <div style="display: flex">
-                    <div class="prank-app-hexagon-container ${state.pranks['General of Chainlink'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['General of Chainlink'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div>General of Chainlink</div>
-                        </div>
-                    </div>
+            <div class="prank-app-main-hexagon-column">
+                <div class="prank-app-hexagon-row">
+                    <prank-hexagon
+                        .rank=${state.pranks['General of Chainlink'].rank}
+                        .tokenId=${state.pranks['General of Chainlink'].tokenId}
+                        .linkRange=${state.pranks['General of Chainlink'].linkRange}
+                    ></prank-hexagon>
                 </div>
 
-                <div style="display: flex">
-                    <div class="prank-app-hexagon-container ${state.pranks['Brigadier General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Brigadier General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Brigadier General</div>
-                            <div class="prank-app-hexagon-link-text">125001 – 175000 LINK</div>
-                        </div>
-                    </div>
+                <div class="prank-app-hexagon-row">
+                    <prank-hexagon
+                        .rank=${state.pranks['Brigadier General'].rank}
+                        .tokenId=${state.pranks['Brigadier General'].tokenId}
+                        .linkRange=${state.pranks['Brigadier General'].linkRange}
+                    ></prank-hexagon>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Major General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Major General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Major General</div>
-                            <div class="prank-app-hexagon-link-text">175001 – 250000 LINK</div>
-                        </div>
-                    </div>
+                    <prank-hexagon
+                        .rank=${state.pranks['Major General'].rank}
+                        .tokenId=${state.pranks['Major General'].tokenId}
+                        .linkRange=${state.pranks['Major General'].linkRange}
+                    ></prank-hexagon>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Lieutenant General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Lieutenant General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Lieutenant General</div>
-                            <div class="prank-app-hexagon-link-text">2500001 – 500000 LINK</div>
-                        </div>
-                    </div>
+                    <prank-hexagon
+                        .rank=${state.pranks['Lieutenant General'].rank}
+                        .tokenId=${state.pranks['Lieutenant General'].tokenId}
+                        .linkRange=${state.pranks['Lieutenant General'].linkRange}
+                    ></prank-hexagon>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['General'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">General</div>
-                            <div class="prank-app-hexagon-link-text">500001 + LINK</div>
-                        </div>
-                    </div>
+                    <prank-hexagon
+                        .rank=${state.pranks['General'].rank}
+                        .tokenId=${state.pranks['General'].tokenId}
+                        .linkRange=${state.pranks['General'].linkRange}
+                    ></prank-hexagon>
                 </div>
 
-                <div style="display: flex">
-                    <div class="prank-app-hexagon-container ${state.pranks['Major'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Major'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Major</div>
-                            <div class="prank-app-hexagon-link-text">35001 – 50000 LINK</div>
-                        </div>
-                    </div>
+                <div class="prank-app-hexagon-row">
+                    <prank-hexagon
+                        .rank=${state.pranks['Major'].rank}
+                        .tokenId=${state.pranks['Major'].tokenId}
+                        .linkRange=${state.pranks['Major'].linkRange}
+                    ></prank-hexagon>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Lieutenant Colonel'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Lieutenant Colonel'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Lieutenant Colonel</div>
-                            <div class="prank-app-hexagon-link-text">50001 – 75000 LINK</div>
-                        </div>
-                    </div>
+                    <prank-hexagon
+                        .rank=${state.pranks['Lieutenant Colonel'].rank}
+                        .tokenId=${state.pranks['Lieutenant Colonel'].tokenId}
+                        .linkRange=${state.pranks['Lieutenant Colonel'].linkRange}
+                    ></prank-hexagon>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Colonel'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Colonel'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Colonel</div>
-                            <div class="prank-app-hexagon-link-text">75001 – 125000 LINK</div>
-                        </div>
-                    </div>
+                    <prank-hexagon
+                        .rank=${state.pranks['Colonel'].rank}
+                        .tokenId=${state.pranks['Colonel'].tokenId}
+                        .linkRange=${state.pranks['Colonel'].linkRange}
+                    ></prank-hexagon>
                 </div>
 
-                <div style="display: flex">
-                    <div class="prank-app-hexagon-container ${state.pranks['Sergeant Major'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Sergeant Major'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Sergeant Major</div>
-                            <div class="prank-app-hexagon-link-text">10001 – 15000 LINK</div>
-                        </div>
-                    </div>
+                <div class="prank-app-hexagon-row">
+                    <prank-hexagon
+                        .rank=${state.pranks['Sergeant Major'].rank}
+                        .tokenId=${state.pranks['Sergeant Major'].tokenId}
+                        .linkRange=${state.pranks['Sergeant Major'].linkRange}
+                    ></prank-hexagon>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Second Lieutenant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Second Lieutenant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Second Lieutenant</div>
-                            <div class="prank-app-hexagon-link-text">15001 – 20000 LINK</div>
-                        </div>
-                    </div>
+                    <prank-hexagon
+                        .rank=${state.pranks['Second Lieutenant'].rank}
+                        .tokenId=${state.pranks['Second Lieutenant'].tokenId}
+                        .linkRange=${state.pranks['Second Lieutenant'].linkRange}
+                    ></prank-hexagon>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['First Lieutenant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['First Lieutenant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">First Lieutenant</div>
-                            <div class="prank-app-hexagon-link-text">20001 – 25000 LINK</div>
-                        </div>
-                    </div>
+                    <prank-hexagon
+                        .rank=${state.pranks['First Lieutenant'].rank}
+                        .tokenId=${state.pranks['First Lieutenant'].tokenId}
+                        .linkRange=${state.pranks['First Lieutenant'].linkRange}
+                    ></prank-hexagon>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Captain'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Captain'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Captain</div>
-                            <div class="prank-app-hexagon-link-text">25001 – 35000 LINK</div>
-                        </div>
-                    </div>
+                    <prank-hexagon
+                        .rank=${state.pranks['Captain'].rank}
+                        .tokenId=${state.pranks['Captain'].tokenId}
+                        .linkRange=${state.pranks['Captain'].linkRange}
+                    ></prank-hexagon>
                 </div>
 
-                <div style="display: flex">
-                    <div class="prank-app-hexagon-container ${state.pranks['Staff Sergeant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Staff Sergeant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Staff Sergeant</div>
-                            <div class="prank-app-hexagon-link-text">5001 – 7500 LINK</div>
-                        </div>
-                    </div>
+                <div class="prank-app-hexagon-row">
+                    <prank-hexagon
+                        .rank=${state.pranks['Staff Sergeant'].rank}
+                        .tokenId=${state.pranks['Staff Sergeant'].tokenId}
+                        .linkRange=${state.pranks['Staff Sergeant'].linkRange}
+                    ></prank-hexagon>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Sergeant First Class'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Sergeant First Class'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Sergeant First Class</div>
-                            <div class="prank-app-hexagon-link-text">7501 – 9000 LINK</div>
-                        </div>
-                    </div>
+                    <prank-hexagon
+                        .rank=${state.pranks['Sergeant First Class'].rank}
+                        .tokenId=${state.pranks['Sergeant First Class'].tokenId}
+                        .linkRange=${state.pranks['Sergeant First Class'].linkRange}
+                    ></prank-hexagon>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Master Sergeant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Master Sergeant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Master Sergeant</div>
-                            <div class="prank-app-hexagon-link-text">9001 – 10000 LINK</div>
-                        </div>
-                    </div>
+                    <prank-hexagon
+                        .rank=${state.pranks['Master Sergeant'].rank}
+                        .tokenId=${state.pranks['Master Sergeant'].tokenId}
+                        .linkRange=${state.pranks['Master Sergeant'].linkRange}
+                    ></prank-hexagon>
                 </div>
 
-                <div style="display: flex">
-                    <div class="prank-app-hexagon-container ${state.pranks['Private'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Private'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Private</div>
-                            <div class="prank-app-hexagon-link-text">1 – 500 LINK</div>
-                        </div>
-                    </div>
+                <div class="prank-app-hexagon-row">
+                    <prank-hexagon
+                        .rank=${state.pranks['Private'].rank}
+                        .tokenId=${state.pranks['Private'].tokenId}
+                        .linkRange=${state.pranks['Private'].linkRange}
+                        @hexagon-click=${() => this.hexagonClick(state.pranks['Private'])}
+                    ></prank-hexagon>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Specialist'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Specialist'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Specialist</div>
-                            <div class="prank-app-hexagon-link-text">501 – 1500 LINK</div>
-                        </div>
-                    </div>
+                    <prank-hexagon
+                        .rank=${state.pranks['Specialist'].rank}
+                        .tokenId=${state.pranks['Specialist'].tokenId}
+                        .linkRange=${state.pranks['Specialist'].linkRange}
+                    ></prank-hexagon>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Corporal'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Corporal'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Corporal</div>
-                            <div class="prank-app-hexagon-link-text">1501 – 3500 LINK</div>
-                        </div>
-                    </div>
+                    <prank-hexagon
+                        .rank=${state.pranks['Corporal'].rank}
+                        .tokenId=${state.pranks['Corporal'].tokenId}
+                        .linkRange=${state.pranks['Corporal'].linkRange}
+                    ></prank-hexagon>
 
-                    <div class="prank-app-hexagon-container ${state.pranks['Sergeant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-container-color'}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.pranks['Sergeant'].tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">Sergeant</div>
-                            <div class="prank-app-hexagon-link-text">3501 – 5000 LINK</div>
-                        </div>
-                    </div>
+                    <prank-hexagon
+                        .rank=${state.pranks['Sergeant'].rank}
+                        .tokenId=${state.pranks['Sergeant'].tokenId}
+                        .linkRange=${state.pranks['Sergeant'].linkRange}
+                    ></prank-hexagon>
                 </div>
             </div>
         `;
