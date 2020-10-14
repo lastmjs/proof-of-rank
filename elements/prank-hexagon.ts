@@ -10,13 +10,15 @@ type State = {
     readonly tokenId: number | 'NOT_SET';
     readonly linkRange: string | 'NOT_SET';
     readonly flipped: boolean;
+    readonly selected: boolean;
 };
 
 const InitialState: Readonly<State> = {
     rank: 'NOT_SET',
     tokenId: 'NOT_SET',
     linkRange: 'NOT_SET',
-    flipped: false
+    flipped: false,
+    selected: false
 };
 
 // TODO put in loading
@@ -29,8 +31,15 @@ class PRANKHexagon extends HTMLElement {
                 .prank-app-hexagon-scene {
                     width: 250px;
                     height: 250px;
+                    transition: width .5s linear;
+                    transition: height .5s linear;
                     perspective: 1000px;
                     cursor: default;
+                }
+
+                .prank-app-hexagon-scene-selected {
+                    width: 500px;
+                    height: 500px;
                 }
 
                 .prank-app-hexagon-container {
@@ -48,10 +57,15 @@ class PRANKHexagon extends HTMLElement {
                 .prank-app-hexagon {
                     position: absolute;
                     font-size: 300px;
+                    transition: font-size .5s linear;
                     font-family: monospace;
                     backface-visibility: hidden;
                     transform-style: preserve-3d;
                     text-shadow: 2px 2px 8px black;
+                }
+
+                .prank-app-hexagon-selected {
+                    font-size: 600px;
                 }
 
                 .prank-app-hexagon-front {
@@ -69,7 +83,6 @@ class PRANKHexagon extends HTMLElement {
 
                 .prank-app-hexagon-text-container {
                     position: absolute;
-                    line-height: normal;
                     font-size: 25px;
                     word-spacing: 100vw;
                     text-shadow: none;
@@ -107,9 +120,9 @@ class PRANKHexagon extends HTMLElement {
                 }
             </style>
 
-            <div class="prank-app-hexagon-scene" @mouseover=${() => this.store.flipped = true} @mouseout=${() => this.store.flipped = false}>
+            <div class="prank-app-hexagon-scene ${state.selected ? 'prank-app-hexagon-scene-selected' : ''}" @mouseover=${() => this.store.flipped = true} @mouseout=${() => this.store.flipped = false}>
                 <div class="prank-app-hexagon-container ${state.flipped ? 'prank-app-hexagon-container-flipped' : ''}">
-                    <div class="prank-app-hexagon prank-app-hexagon-front ${state.tokenId === 'NOT_SET' ? '' : 'prank-app-hexagon-front-proof'}">
+                    <div class="prank-app-hexagon prank-app-hexagon-front ${state.tokenId === 'NOT_SET' ? '' : 'prank-app-hexagon-front-proof'} ${state.selected ? 'prank-app-hexagon-selected' : ''}">
                         &#x2B22;
                         <div class="prank-app-hexagon-text-container ${state.tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
                             <div class="prank-app-hexagon-rank-text">${state.rank}</div>
@@ -117,7 +130,7 @@ class PRANKHexagon extends HTMLElement {
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon prank-app-hexagon-back">
+                    <div class="prank-app-hexagon prank-app-hexagon-back ${state.selected ? 'prank-app-hexagon-selected' : ''}">
                         &#x2B22;
                         <div class="prank-app-hexagon-text-container">
                             <button class="prank-app-hexagon-button" @click=${() => this.dispatchEvent(new CustomEvent('hexagon-click'))}>${state.tokenId === 'NOT_SET' ? 'Prove' : 'View'} Rank</button>

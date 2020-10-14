@@ -6,8 +6,28 @@ import {
 } from 'lit-html';
 import { createObjectStore } from 'reduxular';
 import './prank-hexagon';
+import './prank-modal';
 
-type Rank = 'Private' | 'Specialist';
+type Rank =
+    'Private' |
+    'Specialist' |
+    'Corporal' |
+    'Sergeant' |
+    'Staff Sergeant' |
+    'Sergeant First Class' |
+    'Master Sergeant' |
+    'Sergeant Major' |
+    'Second Lieutenant' |
+    'First Lieutenant' |
+    'Captain' |
+    'Major' |
+    'Lieutenant Colonel' |
+    'Colonel' |
+    'Brigadier General' |
+    'Major General' |
+    'Lieutenant General' |
+    'General' |
+    'General of Chainlink';
 type Address = string;
 
 type State = {
@@ -21,114 +41,133 @@ type State = {
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '1 – 500 LINK';
+            readonly selected: boolean;
         };
         'Specialist': {
             readonly rank: 'Specialist';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '501 – 1500 LINK';
+            readonly selected: boolean;
         };
         'Corporal': {
             readonly rank: 'Corporal';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '1501 – 3500 LINK';
+            readonly selected: boolean;
         };
         'Sergeant': {
             readonly rank: 'Sergeant';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '3501 – 5000 LINK';
+            readonly selected: boolean;
         };
         'Staff Sergeant': {
             readonly rank: 'Staff Sergeant';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '5001 – 7500 LINK';
+            readonly selected: boolean;
         };
         'Sergeant First Class': {
             readonly rank: 'Sergeant First Class';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '7501 – 9000 LINK';
+            readonly selected: boolean;
         };
         'Master Sergeant': {
             readonly rank: 'Master Sergeant';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '9001 – 10000 LINK';
+            readonly selected: boolean;
         };
         'Sergeant Major': {
             readonly rank: 'Sergeant Major';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '10001 – 15000 LINK';
+            readonly selected: boolean;
         };
         'Second Lieutenant': {
             readonly rank: 'Second Lieutenant';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '15001 – 20000 LINK';
+            readonly selected: boolean;
         };
         'First Lieutenant': {
             readonly rank: 'First Lieutenant';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '20001 – 25000 LINK';
+            readonly selected: boolean;
         };
         'Captain': {
             readonly rank: 'Captain';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '25001 – 35000 LINK';
+            readonly selected: boolean;
         };
         'Major': {
             readonly rank: 'Major';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '35001 – 50000 LINK';
+            readonly selected: boolean;
         };
         'Lieutenant Colonel': {
             readonly rank: 'Lieutenant Colonel';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '50001 – 75000 LINK';
+            readonly selected: boolean;
         };
         'Colonel': {
             readonly rank: 'Colonel';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '75001 – 125000 LINK';
+            readonly selected: boolean;
         };
         'Brigadier General': {
             readonly rank: 'Brigadier General';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '125001 – 175000 LINK';
+            readonly selected: boolean;
         };
         'Major General': {
             readonly rank: 'Major General';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '175001 – 250000 LINK';
+            readonly selected: boolean;
         };
         'Lieutenant General': {
             readonly rank: 'Lieutenant General';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '2500001 – 500000 LINK';
+            readonly selected: boolean;
         };
         'General': {
             readonly rank: 'General';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '500001 + LINK';
+            readonly selected: boolean;
         };
         'General of Chainlink': {
             readonly rank: 'General of Chainlink';
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: 'NOT_SET';
+            readonly selected: boolean;
         };
     };
 };
@@ -143,115 +182,134 @@ const InitialState: Readonly<State> = {
             rank: 'Private',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '1 – 500 LINK'
+            linkRange: '1 – 500 LINK',
+            selected: false
         },
         'Specialist': {
             rank: 'Specialist',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '501 – 1500 LINK'
+            linkRange: '501 – 1500 LINK',
+            selected: false
         },
         'Corporal': {
             rank: 'Corporal',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '1501 – 3500 LINK'
+            linkRange: '1501 – 3500 LINK',
+            selected: false
         },
         'Sergeant': {
             rank: 'Sergeant',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '3501 – 5000 LINK'
+            linkRange: '3501 – 5000 LINK',
+            selected: false
         },
         'Staff Sergeant': {
             rank: 'Staff Sergeant',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '5001 – 7500 LINK'
+            linkRange: '5001 – 7500 LINK',
+            selected: false
         },
         'Sergeant First Class': {
             rank: 'Sergeant First Class',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '7501 – 9000 LINK'
+            linkRange: '7501 – 9000 LINK',
+            selected: false
         },
         'Master Sergeant': {
             rank: 'Master Sergeant',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '9001 – 10000 LINK'
+            linkRange: '9001 – 10000 LINK',
+            selected: false
         },
         'Sergeant Major': {
             rank: 'Sergeant Major',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '10001 – 15000 LINK'
+            linkRange: '10001 – 15000 LINK',
+            selected: false
         },
         'Second Lieutenant': {
             rank: 'Second Lieutenant',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '15001 – 20000 LINK'
+            linkRange: '15001 – 20000 LINK',
+            selected: false
         },
         'First Lieutenant': {
             rank: 'First Lieutenant',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '20001 – 25000 LINK'
+            linkRange: '20001 – 25000 LINK',
+            selected: false
         },
         'Captain': {
             rank: 'Captain',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '25001 – 35000 LINK'
+            linkRange: '25001 – 35000 LINK',
+            selected: false
         },
         'Major': {
             rank: 'Major',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '35001 – 50000 LINK'
+            linkRange: '35001 – 50000 LINK',
+            selected: false
         },
         'Lieutenant Colonel': {
             rank: 'Lieutenant Colonel',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '50001 – 75000 LINK'
+            linkRange: '50001 – 75000 LINK',
+            selected: false
         },
         'Colonel': {
             rank: 'Colonel',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '75001 – 125000 LINK'
+            linkRange: '75001 – 125000 LINK',
+            selected: false
         },
         'Brigadier General': {
             rank: 'Brigadier General',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '125001 – 175000 LINK'
+            linkRange: '125001 – 175000 LINK',
+            selected: false
         },
         'Major General': {
             rank: 'Major General',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '175001 – 250000 LINK'
+            linkRange: '175001 – 250000 LINK',
+            selected: false
         },
         'Lieutenant General': {
             rank: 'Lieutenant General',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '2500001 – 500000 LINK'
+            linkRange: '2500001 – 500000 LINK',
+            selected: false
         },
         'General': {
             rank: 'General',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: '500001 + LINK'
+            linkRange: '500001 + LINK',
+            selected: false
         },
         'General of Chainlink': {
             rank: 'General of Chainlink',
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
-            linkRange: 'NOT_SET'
+            linkRange: 'NOT_SET',
+            selected: false
         }
     },
 };
@@ -289,14 +347,22 @@ class PRANKApp extends HTMLElement {
         }
     }
 
-    async hexagonClick(prank: Prank) {
-        if (prank.tokenId === 'NOT_SET') {
-            const confirmed = confirm(`You are about to obtain 1 PRANK token. The cost is 1 LINK.`);
-            // TODO do a metamask transaction
-        }
-        else {
-            // TODO show large image suitable for sharing on social media
-        }
+    async hexagonClick(rank: Rank) {
+        // this.store.pranks[rank].selected = true;
+        this.store.pranks = {
+            ...this.store.pranks,
+            [rank]: {
+                ...this.store.pranks[rank],
+                selected: !this.store.pranks[rank].selected
+            }
+        };
+        // if (prank.tokenId === 'NOT_SET') {
+        //     const confirmed = confirm(`You are about to obtain 1 PRANK token. The cost is 1 LINK.`);
+        //     // TODO do a metamask transaction
+        // }
+        // else {
+        //     // TODO show large image suitable for sharing on social media
+        // }
     }
 
     // TODO create mobile layout...simply make the hexagons bigger and change the flex direction to column and add some padding between rows
@@ -328,12 +394,16 @@ class PRANKApp extends HTMLElement {
 
             <button @click=${() => this.connectToMetaMask()} ?hidden=${state.ownerAddress !== ''}>Connect to MetaMask</button>
 
+            <prank-modal></prank-modal>
+
             <div class="prank-app-main-hexagon-column">
                 <div class="prank-app-hexagon-row">
                     <prank-hexagon
                         .rank=${state.pranks['General of Chainlink'].rank}
                         .tokenId=${state.pranks['General of Chainlink'].tokenId}
                         .linkRange=${state.pranks['General of Chainlink'].linkRange}
+                        .selected=${state.pranks['General of Chainlink'].selected}
+                        @hexagon-click=${() => this.hexagonClick('General of Chainlink')}
                     ></prank-hexagon>
                 </div>
 
@@ -342,24 +412,32 @@ class PRANKApp extends HTMLElement {
                         .rank=${state.pranks['Brigadier General'].rank}
                         .tokenId=${state.pranks['Brigadier General'].tokenId}
                         .linkRange=${state.pranks['Brigadier General'].linkRange}
+                        .selected=${state.pranks['Brigadier General'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Brigadier General')}
                     ></prank-hexagon>
 
                     <prank-hexagon
                         .rank=${state.pranks['Major General'].rank}
                         .tokenId=${state.pranks['Major General'].tokenId}
                         .linkRange=${state.pranks['Major General'].linkRange}
+                        .selected=${state.pranks['Major General'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Major General')}
                     ></prank-hexagon>
 
                     <prank-hexagon
                         .rank=${state.pranks['Lieutenant General'].rank}
                         .tokenId=${state.pranks['Lieutenant General'].tokenId}
                         .linkRange=${state.pranks['Lieutenant General'].linkRange}
+                        .selected=${state.pranks['Lieutenant General'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Lieutenant General')}
                     ></prank-hexagon>
 
                     <prank-hexagon
                         .rank=${state.pranks['General'].rank}
                         .tokenId=${state.pranks['General'].tokenId}
                         .linkRange=${state.pranks['General'].linkRange}
+                        .selected=${state.pranks['General'].selected}
+                        @hexagon-click=${() => this.hexagonClick('General')}
                     ></prank-hexagon>
                 </div>
 
@@ -368,18 +446,24 @@ class PRANKApp extends HTMLElement {
                         .rank=${state.pranks['Major'].rank}
                         .tokenId=${state.pranks['Major'].tokenId}
                         .linkRange=${state.pranks['Major'].linkRange}
+                        .selected=${state.pranks['Major'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Major')}
                     ></prank-hexagon>
 
                     <prank-hexagon
                         .rank=${state.pranks['Lieutenant Colonel'].rank}
                         .tokenId=${state.pranks['Lieutenant Colonel'].tokenId}
                         .linkRange=${state.pranks['Lieutenant Colonel'].linkRange}
+                        .selected=${state.pranks['Lieutenant Colonel'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Lieutenant Colonel')}
                     ></prank-hexagon>
 
                     <prank-hexagon
                         .rank=${state.pranks['Colonel'].rank}
                         .tokenId=${state.pranks['Colonel'].tokenId}
                         .linkRange=${state.pranks['Colonel'].linkRange}
+                        .selected=${state.pranks['Colonel'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Colonel')}
                     ></prank-hexagon>
                 </div>
 
@@ -388,24 +472,32 @@ class PRANKApp extends HTMLElement {
                         .rank=${state.pranks['Sergeant Major'].rank}
                         .tokenId=${state.pranks['Sergeant Major'].tokenId}
                         .linkRange=${state.pranks['Sergeant Major'].linkRange}
+                        .selected=${state.pranks['Sergeant Major'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Sergeant Major')}
                     ></prank-hexagon>
 
                     <prank-hexagon
                         .rank=${state.pranks['Second Lieutenant'].rank}
                         .tokenId=${state.pranks['Second Lieutenant'].tokenId}
                         .linkRange=${state.pranks['Second Lieutenant'].linkRange}
+                        .selected=${state.pranks['Second Lieutenant'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Second Lieutenant')}
                     ></prank-hexagon>
 
                     <prank-hexagon
                         .rank=${state.pranks['First Lieutenant'].rank}
                         .tokenId=${state.pranks['First Lieutenant'].tokenId}
                         .linkRange=${state.pranks['First Lieutenant'].linkRange}
+                        .selected=${state.pranks['First Lieutenant'].selected}
+                        @hexagon-click=${() => this.hexagonClick('First Lieutenant')}
                     ></prank-hexagon>
 
                     <prank-hexagon
                         .rank=${state.pranks['Captain'].rank}
                         .tokenId=${state.pranks['Captain'].tokenId}
                         .linkRange=${state.pranks['Captain'].linkRange}
+                        .selected=${state.pranks['Captain'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Captain')}
                     ></prank-hexagon>
                 </div>
 
@@ -414,18 +506,24 @@ class PRANKApp extends HTMLElement {
                         .rank=${state.pranks['Staff Sergeant'].rank}
                         .tokenId=${state.pranks['Staff Sergeant'].tokenId}
                         .linkRange=${state.pranks['Staff Sergeant'].linkRange}
+                        .selected=${state.pranks['Staff Sergeant'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Staff Sergeant')}
                     ></prank-hexagon>
 
                     <prank-hexagon
                         .rank=${state.pranks['Sergeant First Class'].rank}
                         .tokenId=${state.pranks['Sergeant First Class'].tokenId}
                         .linkRange=${state.pranks['Sergeant First Class'].linkRange}
+                        .selected=${state.pranks['Sergeant First Class'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Sergeant First Class')}
                     ></prank-hexagon>
 
                     <prank-hexagon
                         .rank=${state.pranks['Master Sergeant'].rank}
                         .tokenId=${state.pranks['Master Sergeant'].tokenId}
                         .linkRange=${state.pranks['Master Sergeant'].linkRange}
+                        .selected=${state.pranks['Master Sergeant'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Master Sergeant')}
                     ></prank-hexagon>
                 </div>
 
@@ -434,25 +532,32 @@ class PRANKApp extends HTMLElement {
                         .rank=${state.pranks['Private'].rank}
                         .tokenId=${state.pranks['Private'].tokenId}
                         .linkRange=${state.pranks['Private'].linkRange}
-                        @hexagon-click=${() => this.hexagonClick(state.pranks['Private'])}
+                        .selected=${state.pranks['Private'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Private')}
                     ></prank-hexagon>
 
                     <prank-hexagon
                         .rank=${state.pranks['Specialist'].rank}
                         .tokenId=${state.pranks['Specialist'].tokenId}
                         .linkRange=${state.pranks['Specialist'].linkRange}
+                        .selected=${state.pranks['Specialist'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Specialist')}
                     ></prank-hexagon>
 
                     <prank-hexagon
                         .rank=${state.pranks['Corporal'].rank}
                         .tokenId=${state.pranks['Corporal'].tokenId}
                         .linkRange=${state.pranks['Corporal'].linkRange}
+                        .selected=${state.pranks['Corporal'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Corporal')}
                     ></prank-hexagon>
 
                     <prank-hexagon
                         .rank=${state.pranks['Sergeant'].rank}
                         .tokenId=${state.pranks['Sergeant'].tokenId}
                         .linkRange=${state.pranks['Sergeant'].linkRange}
+                        .selected=${state.pranks['Sergeant'].selected}
+                        @hexagon-click=${() => this.hexagonClick('Sergeant')}
                     ></prank-hexagon>
                 </div>
             </div>
