@@ -6,7 +6,6 @@ import {
 } from 'lit-html';
 import { createObjectStore } from 'reduxular';
 import './prank-hexagon';
-import './prank-modal';
 
 type Rank =
     'Private' |
@@ -367,7 +366,10 @@ class PRANKApp extends HTMLElement {
 
     // TODO create mobile layout...simply make the hexagons bigger and change the flex direction to column and add some padding between rows
     render(state: Readonly<State>): Readonly<TemplateResult> {
-        console.log(state);
+        const atLeastOnePrankIsSelected: boolean = Object.values(state.pranks).some((prank) => {
+            return prank.selected === true;
+        });
+
         return html`
             <style>
                 html {
@@ -385,16 +387,19 @@ class PRANKApp extends HTMLElement {
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
+                    padding-bottom: 25rem;
                 }
 
                 .prank-app-hexagon-row {
                     display: flex;
                 }
+
+                prank-hexagon {
+                    padding: 1rem;
+                }
             </style>
 
             <button @click=${() => this.connectToMetaMask()} ?hidden=${state.ownerAddress !== ''}>Connect to MetaMask</button>
-
-            <prank-modal></prank-modal>
 
             <div class="prank-app-main-hexagon-column">
                 <div class="prank-app-hexagon-row">
@@ -403,6 +408,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['General of Chainlink'].tokenId}
                         .linkRange=${state.pranks['General of Chainlink'].linkRange}
                         .selected=${state.pranks['General of Chainlink'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['General of Chainlink'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('General of Chainlink')}
                     ></prank-hexagon>
                 </div>
@@ -413,6 +419,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Brigadier General'].tokenId}
                         .linkRange=${state.pranks['Brigadier General'].linkRange}
                         .selected=${state.pranks['Brigadier General'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Brigadier General'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Brigadier General')}
                     ></prank-hexagon>
 
@@ -421,6 +428,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Major General'].tokenId}
                         .linkRange=${state.pranks['Major General'].linkRange}
                         .selected=${state.pranks['Major General'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Major General'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Major General')}
                     ></prank-hexagon>
 
@@ -429,6 +437,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Lieutenant General'].tokenId}
                         .linkRange=${state.pranks['Lieutenant General'].linkRange}
                         .selected=${state.pranks['Lieutenant General'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Lieutenant General'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Lieutenant General')}
                     ></prank-hexagon>
 
@@ -437,6 +446,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['General'].tokenId}
                         .linkRange=${state.pranks['General'].linkRange}
                         .selected=${state.pranks['General'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['General'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('General')}
                     ></prank-hexagon>
                 </div>
@@ -447,6 +457,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Major'].tokenId}
                         .linkRange=${state.pranks['Major'].linkRange}
                         .selected=${state.pranks['Major'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Major'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Major')}
                     ></prank-hexagon>
 
@@ -455,6 +466,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Lieutenant Colonel'].tokenId}
                         .linkRange=${state.pranks['Lieutenant Colonel'].linkRange}
                         .selected=${state.pranks['Lieutenant Colonel'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Lieutenant Colonel'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Lieutenant Colonel')}
                     ></prank-hexagon>
 
@@ -463,6 +475,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Colonel'].tokenId}
                         .linkRange=${state.pranks['Colonel'].linkRange}
                         .selected=${state.pranks['Colonel'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Colonel'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Colonel')}
                     ></prank-hexagon>
                 </div>
@@ -473,6 +486,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Sergeant Major'].tokenId}
                         .linkRange=${state.pranks['Sergeant Major'].linkRange}
                         .selected=${state.pranks['Sergeant Major'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Sergeant Major'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Sergeant Major')}
                     ></prank-hexagon>
 
@@ -481,6 +495,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Second Lieutenant'].tokenId}
                         .linkRange=${state.pranks['Second Lieutenant'].linkRange}
                         .selected=${state.pranks['Second Lieutenant'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Second Lieutenant'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Second Lieutenant')}
                     ></prank-hexagon>
 
@@ -489,6 +504,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['First Lieutenant'].tokenId}
                         .linkRange=${state.pranks['First Lieutenant'].linkRange}
                         .selected=${state.pranks['First Lieutenant'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['First Lieutenant'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('First Lieutenant')}
                     ></prank-hexagon>
 
@@ -497,6 +513,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Captain'].tokenId}
                         .linkRange=${state.pranks['Captain'].linkRange}
                         .selected=${state.pranks['Captain'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Captain'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Captain')}
                     ></prank-hexagon>
                 </div>
@@ -507,6 +524,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Staff Sergeant'].tokenId}
                         .linkRange=${state.pranks['Staff Sergeant'].linkRange}
                         .selected=${state.pranks['Staff Sergeant'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Staff Sergeant'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Staff Sergeant')}
                     ></prank-hexagon>
 
@@ -515,6 +533,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Sergeant First Class'].tokenId}
                         .linkRange=${state.pranks['Sergeant First Class'].linkRange}
                         .selected=${state.pranks['Sergeant First Class'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Sergeant First Class'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Sergeant First Class')}
                     ></prank-hexagon>
 
@@ -523,6 +542,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Master Sergeant'].tokenId}
                         .linkRange=${state.pranks['Master Sergeant'].linkRange}
                         .selected=${state.pranks['Master Sergeant'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Master Sergeant'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Master Sergeant')}
                     ></prank-hexagon>
                 </div>
@@ -533,6 +553,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Private'].tokenId}
                         .linkRange=${state.pranks['Private'].linkRange}
                         .selected=${state.pranks['Private'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Private'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Private')}
                     ></prank-hexagon>
 
@@ -541,6 +562,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Specialist'].tokenId}
                         .linkRange=${state.pranks['Specialist'].linkRange}
                         .selected=${state.pranks['Specialist'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Specialist'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Specialist')}
                     ></prank-hexagon>
 
@@ -549,6 +571,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Corporal'].tokenId}
                         .linkRange=${state.pranks['Corporal'].linkRange}
                         .selected=${state.pranks['Corporal'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Corporal'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Corporal')}
                     ></prank-hexagon>
 
@@ -557,6 +580,7 @@ class PRANKApp extends HTMLElement {
                         .tokenId=${state.pranks['Sergeant'].tokenId}
                         .linkRange=${state.pranks['Sergeant'].linkRange}
                         .selected=${state.pranks['Sergeant'].selected}
+                        .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Sergeant'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Sergeant')}
                     ></prank-hexagon>
                 </div>

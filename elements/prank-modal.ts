@@ -24,11 +24,14 @@ class PRANKModal extends HTMLElement {
                     position: fixed;
                     height: 100%;
                     width: 100%;
-                    background-color: rgba(0, 0, 0, .75);
                     z-index: 1;
                     display: flex;
-                    align-items: center;
+                    /* align-items: center; */
                     justify-content: center;
+                    top: 0;
+                    right: 0;
+                    /* padding: 10rem; */
+                    /* background-color: red; */
                 }
 
                 .prank-modal-hexagon {
@@ -41,18 +44,23 @@ class PRANKModal extends HTMLElement {
                 }
 
                 .prank-modal-hexagon-text-container {
-                    position: absolute;
+                    /* position: absolute; */
+                    margin-top: 10rem;
+                    display: flex;
+                    flex-direction: column;
                     font-size: 25px;
                     /* word-spacing: 100vw; */
                     text-shadow: none;
+                    background-color: rgba(0, 0, 0, .75);
                     /* color: rgba(191, 191, 191, 1); */
                     /* backface-visibility:hidden; */
-                    text-align: center;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    left: 0px;
-                    right: 0px;
+                    /* text-align: center; */
+                    /* top: 50%; */
+                    /* transform: translateY(-50%); */
+                    /* left: 0px; */
+                    /* right: 0px; */
                     color: white;
+                    font-family: sans-serif;
                     /* width: 500px; */
                     /* height: 500px; */
                 }
@@ -60,7 +68,6 @@ class PRANKModal extends HTMLElement {
 
             <div class="prank-modal-main-container">
                 <div class="prank-modal-hexagon">
-                    &#x2B22;
                     <div class="prank-modal-hexagon-text-container">
                         <div>You are about to obtain your Proof of Rank in the Brotherhood of LINK Marines</div>
 

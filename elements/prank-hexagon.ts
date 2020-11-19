@@ -4,6 +4,7 @@ import {
     TemplateResult
 } from 'lit-html';
 import { createObjectStore } from 'reduxular';
+import './prank-modal';
 
 type State = {
     readonly rank: string | 'NOT_SET';
@@ -11,6 +12,7 @@ type State = {
     readonly linkRange: string | 'NOT_SET';
     readonly flipped: boolean;
     readonly selected: boolean;
+    readonly anotherPrankIsSelected: boolean;
 };
 
 const InitialState: Readonly<State> = {
@@ -18,28 +20,40 @@ const InitialState: Readonly<State> = {
     tokenId: 'NOT_SET',
     linkRange: 'NOT_SET',
     flipped: false,
-    selected: false
+    selected: false,
+    anotherPrankIsSelected: false
 };
 
 // TODO put in loading
 class PRANKHexagon extends HTMLElement {
     readonly store = createObjectStore(InitialState, (state: Readonly<State>) => litRender(this.render(state), this), this);
 
+    set selected(selected: boolean) {
+        this.store.selected = selected;
+
+        if (this.store.selected === true) {
+
+            setTimeout(() => {
+                this.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }, 500);
+
+        }
+    }
+
     render(state: Readonly<State>): Readonly<TemplateResult> {
         return html`
             <style>
                 .prank-app-hexagon-scene {
-                    width: 250px;
-                    height: 250px;
+                    width: 346px;
+                    height: 400px;
                     transition: width .5s linear;
                     transition: height .5s linear;
                     perspective: 1000px;
                     cursor: default;
-                }
-
-                .prank-app-hexagon-scene-selected {
-                    width: 500px;
-                    height: 500px;
+                    font-family: sans-serif;
+                    transition: opacity .25s ease-in-out;
                 }
 
                 .prank-app-hexagon-container {
@@ -54,22 +68,9 @@ class PRANKHexagon extends HTMLElement {
                     transform: rotateY(180deg);
                 }
 
-                .prank-app-hexagon {
-                    position: absolute;
-                    font-size: 300px;
-                    transition: font-size .5s linear;
-                    font-family: monospace;
-                    backface-visibility: hidden;
-                    transform-style: preserve-3d;
-                    text-shadow: 2px 2px 8px black;
-                }
-
-                .prank-app-hexagon-selected {
-                    font-size: 600px;
-                }
-
                 .prank-app-hexagon-front {
                     color: grey;
+                    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="346" height="400"><polyline fill="grey" points="173,0 346,100 346,300 173,400 0,300 0,100 173,0" /></svg>');
                 }
 
                 .prank-app-hexagon-front-proof {
@@ -79,20 +80,15 @@ class PRANKHexagon extends HTMLElement {
                 .prank-app-hexagon-back {
                     color: black;
                     transform: rotateY(180deg);
+                    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="346" height="400"><polyline fill="black" points="173,0 346,100 346,300 173,400 0,300 0,100 173,0" /></svg>');
                 }
 
                 .prank-app-hexagon-text-container {
-                    position: absolute;
                     font-size: 25px;
                     word-spacing: 100vw;
                     text-shadow: none;
                     color: rgba(191, 191, 191, 1);
-                    backface-visibility:hidden;
-                    text-align: center;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    left: 0px;
-                    right: 0px;
+                    backface-visibility: hidden;
                 }
 
                 .prank-app-proof-hexagon-text {
@@ -118,22 +114,111 @@ class PRANKHexagon extends HTMLElement {
                     border-radius: 5px;
                     padding: 5px;
                 }
+
+                .prank-app-hexagon {
+                    backface-visibility: hidden;
+                    position: absolute;
+                    text-align: center;
+                    width: 346px;
+                    height: 400px;
+                    background-size: 346px 400px;
+                    filter: drop-shadow(0px 0px .2rem black);
+                    transition: width .25s ease-in-out;
+                    transition: height .25s ease-in-out;
+                }
+
+                .prank-app-hexagon-selected {
+                    background: none;
+                    background-color: black;
+                    width: 500px;
+                    height: 500px;
+                }
             </style>
 
-            <div class="prank-app-hexagon-scene ${state.selected ? 'prank-app-hexagon-scene-selected' : ''}" @mouseover=${() => this.store.flipped = true} @mouseout=${() => this.store.flipped = false}>
-                <div class="prank-app-hexagon-container ${state.flipped ? 'prank-app-hexagon-container-flipped' : ''}">
-                    <div class="prank-app-hexagon prank-app-hexagon-front ${state.tokenId === 'NOT_SET' ? '' : 'prank-app-hexagon-front-proof'} ${state.selected ? 'prank-app-hexagon-selected' : ''}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container ${state.tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}">
-                            <div class="prank-app-hexagon-rank-text">${state.rank}</div>
-                            <div class="prank-app-hexagon-link-text">${state.linkRange === 'NOT_SET' ? '' : state.linkRange}</div>
+            <div
+                class="prank-app-hexagon-scene"
+                style="opacity: ${state.anotherPrankIsSelected === true ? '0' : '1'}"
+                @mouseover=${() => {
+                    if (this.store.selected === false) {
+                        this.store.flipped = true;
+                    }
+                }}
+                @mouseout=${() => {
+                    if (this.store.selected === false) {
+                        this.store.flipped = false;
+                    }
+                }}
+            >
+                <div
+                    class="prank-app-hexagon-container ${state.flipped ? 'prank-app-hexagon-container-flipped' : ''}"
+                >
+                    <div
+                        class="prank-app-hexagon prank-app-hexagon-front ${state.tokenId === 'NOT_SET' ? '' : 'prank-app-hexagon-front-proof'}"
+                    >
+                        <div
+                            class="prank-app-hexagon-text-container ${state.tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}"
+                            style="width: 346px; height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center"
+                        >
+                            <div
+                                class="prank-app-hexagon-rank-text"
+                            >
+                                ${state.rank}
+                            </div>
+
+                            <div
+                                class="prank-app-hexagon-link-text"
+                            >
+                                ${state.linkRange === 'NOT_SET' ? '' : state.linkRange}
+                            </div>
                         </div>
                     </div>
 
-                    <div class="prank-app-hexagon prank-app-hexagon-back ${state.selected ? 'prank-app-hexagon-selected' : ''}">
-                        &#x2B22;
-                        <div class="prank-app-hexagon-text-container">
-                            <button class="prank-app-hexagon-button" @click=${() => this.dispatchEvent(new CustomEvent('hexagon-click'))}>${state.tokenId === 'NOT_SET' ? 'Prove' : 'View'} Rank</button>
+                    <div
+                        class="prank-app-hexagon prank-app-hexagon-back ${state.selected === true ? 'prank-app-hexagon-selected' : ''}"
+                    >
+                        <div
+                            class="prank-app-hexagon-text-container ${state.tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}"
+                            style="width: ${state.selected === true ? '500px' : '346px'}; height: ${state.selected === true ? '500px': '400px'}; display: flex; flex-direction: column; align-items: center; ${state.selected === true ? '' : 'justify-content: center'}"
+                        >
+                            <div ?hidden=${state.selected}>
+                                <button
+                                    class="prank-app-hexagon-button"
+                                    @click=${() => this.dispatchEvent(new CustomEvent('hexagon-click'))}
+                                >
+                                    ${state.tokenId === 'NOT_SET' ? 'Prove' : 'View'} Rank
+                                </button>
+                            </div>
+
+                            <div ?hidden=${!state.selected} style="word-spacing: 0; padding: 5rem; overflow-y: scroll">
+                                <button class="prank-app-hexagon-button" style="position: absolute; top: 1rem; left: 1rem" @click=${() => this.dispatchEvent(new CustomEvent('hexagon-click'))}>cancel</button>
+                            
+                                <div style="padding-bottom: 1rem">You are about to obtain your Proof of Rank in the Brotherhood of LINK Marines</div>
+                                
+                                <hr>
+
+                                <div style="padding-top: 1rem; padding-bottom: 1rem">Please certify the following:</div>
+                                
+                                <div style="padding-bottom: 1rem">
+                                    <input type="checkbox"> ${state.rank === 'General of Chainlink' ? 'I am the General of Chainlink' : `I own between ${state.linkRange} inclusive`}
+                                </div>
+
+                                <div style="padding-bottom: 1rem">
+                                    <input type="checkbox"> I am purchasing 1 PRANK token for the price of 1 LINK token
+                                </div>
+
+                                <div style="padding-bottom: 1rem">
+                                    <input type="checkbox"> The Proof of Rank website and PRANK tokens are offered to me under the terms of the <a href="https://github.com/lastmjs/proof-of-rank/blob/master/LICENSE" target="_blank">MIT license</a>. There is no warranty of any kind. I am using this software at my own risk
+                                </div>
+
+                                <div style="padding-bottom: 3rem">
+                                    <input type="checkbox"> I am not in a country nor am I a person that is sanctioned by the United States
+                                </div>
+                                
+                                <div style="padding-bottom: 1rem">
+                                    <button class="prank-app-hexagon-button" style="font-size: 1.5rem; padding: 1rem">Advance to ${state.rank}</button>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
