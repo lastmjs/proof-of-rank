@@ -6,27 +6,8 @@ import {
 } from 'lit-html';
 import { createObjectStore } from 'reduxular';
 import './prank-hexagon';
+import { Rank } from '../types/index.d';
 
-type Rank =
-    'Private' |
-    'Specialist' |
-    'Corporal' |
-    'Sergeant' |
-    'Staff Sergeant' |
-    'Sergeant First Class' |
-    'Master Sergeant' |
-    'Sergeant Major' |
-    'Second Lieutenant' |
-    'First Lieutenant' |
-    'Captain' |
-    'Major' |
-    'Lieutenant Colonel' |
-    'Colonel' |
-    'Brigadier General' |
-    'Major General' |
-    'Lieutenant General' |
-    'General' |
-    'General of Chainlink';
 type Address = string;
 
 type State = {
@@ -37,6 +18,7 @@ type State = {
     readonly pranks: {
         'Private': {
             readonly rank: 'Private';
+            readonly index: 0;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '1 – 500 LINK';
@@ -44,6 +26,7 @@ type State = {
         };
         'Specialist': {
             readonly rank: 'Specialist';
+            readonly index: 1;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '501 – 1500 LINK';
@@ -51,6 +34,7 @@ type State = {
         };
         'Corporal': {
             readonly rank: 'Corporal';
+            readonly index: 2;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '1501 – 3500 LINK';
@@ -58,6 +42,7 @@ type State = {
         };
         'Sergeant': {
             readonly rank: 'Sergeant';
+            readonly index: 3;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '3501 – 5000 LINK';
@@ -65,6 +50,7 @@ type State = {
         };
         'Staff Sergeant': {
             readonly rank: 'Staff Sergeant';
+            readonly index: 4;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '5001 – 7500 LINK';
@@ -72,6 +58,7 @@ type State = {
         };
         'Sergeant First Class': {
             readonly rank: 'Sergeant First Class';
+            readonly index: 5;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '7501 – 9000 LINK';
@@ -79,6 +66,7 @@ type State = {
         };
         'Master Sergeant': {
             readonly rank: 'Master Sergeant';
+            readonly index: 6;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '9001 – 10000 LINK';
@@ -86,6 +74,7 @@ type State = {
         };
         'Sergeant Major': {
             readonly rank: 'Sergeant Major';
+            readonly index: 7;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '10001 – 15000 LINK';
@@ -93,6 +82,7 @@ type State = {
         };
         'Second Lieutenant': {
             readonly rank: 'Second Lieutenant';
+            readonly index: 8;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '15001 – 20000 LINK';
@@ -100,6 +90,7 @@ type State = {
         };
         'First Lieutenant': {
             readonly rank: 'First Lieutenant';
+            readonly index: 9;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '20001 – 25000 LINK';
@@ -107,6 +98,7 @@ type State = {
         };
         'Captain': {
             readonly rank: 'Captain';
+            readonly index: 10;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '25001 – 35000 LINK';
@@ -114,6 +106,7 @@ type State = {
         };
         'Major': {
             readonly rank: 'Major';
+            readonly index: 11;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '35001 – 50000 LINK';
@@ -121,6 +114,7 @@ type State = {
         };
         'Lieutenant Colonel': {
             readonly rank: 'Lieutenant Colonel';
+            readonly index: 12;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '50001 – 75000 LINK';
@@ -128,6 +122,7 @@ type State = {
         };
         'Colonel': {
             readonly rank: 'Colonel';
+            readonly index: 13;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '75001 – 125000 LINK';
@@ -135,6 +130,7 @@ type State = {
         };
         'Brigadier General': {
             readonly rank: 'Brigadier General';
+            readonly index: 14;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '125001 – 175000 LINK';
@@ -142,6 +138,7 @@ type State = {
         };
         'Major General': {
             readonly rank: 'Major General';
+            readonly index: 15;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '175001 – 250000 LINK';
@@ -149,6 +146,7 @@ type State = {
         };
         'Lieutenant General': {
             readonly rank: 'Lieutenant General';
+            readonly index: 16;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '2500001 – 500000 LINK';
@@ -156,6 +154,7 @@ type State = {
         };
         'General': {
             readonly rank: 'General';
+            readonly index: 17;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: '500001 + LINK';
@@ -163,6 +162,7 @@ type State = {
         };
         'General of Chainlink': {
             readonly rank: 'General of Chainlink';
+            readonly index: 18;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
             readonly linkRange: 'NOT_SET';
@@ -172,13 +172,14 @@ type State = {
 };
 
 const InitialState: Readonly<State> = {
-    linkTokenAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
-    proofOfRankAddress: '0x54421e7a0325cCbf6b8F3A28F9c176C77343b7db',
+    linkTokenAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA', // TODO set this up appropriately for staging and development and production environments
+    proofOfRankAddress: '0x54421e7a0325cCbf6b8F3A28F9c176C77343b7db', // TODO set this up appropriately for staging and development and production environments
     ownerAddress: '',
     provider: (window as any).ethereum ? new ethers.providers.Web3Provider((window as any).ethereum) : 'NOT_SET', // TODO should we check to make sure that window.ethereum is defined? Yes, yes we should. We do not want this to break on browsers that do not have metamask installed, instead we want to help them to get MetaMask installed
     pranks: {
         'Private': {
             rank: 'Private',
+            index: 0,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '1 – 500 LINK',
@@ -186,6 +187,7 @@ const InitialState: Readonly<State> = {
         },
         'Specialist': {
             rank: 'Specialist',
+            index: 1,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '501 – 1500 LINK',
@@ -193,6 +195,7 @@ const InitialState: Readonly<State> = {
         },
         'Corporal': {
             rank: 'Corporal',
+            index: 2,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '1501 – 3500 LINK',
@@ -200,6 +203,7 @@ const InitialState: Readonly<State> = {
         },
         'Sergeant': {
             rank: 'Sergeant',
+            index: 3,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '3501 – 5000 LINK',
@@ -207,6 +211,7 @@ const InitialState: Readonly<State> = {
         },
         'Staff Sergeant': {
             rank: 'Staff Sergeant',
+            index: 4,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '5001 – 7500 LINK',
@@ -214,6 +219,7 @@ const InitialState: Readonly<State> = {
         },
         'Sergeant First Class': {
             rank: 'Sergeant First Class',
+            index: 5,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '7501 – 9000 LINK',
@@ -221,6 +227,7 @@ const InitialState: Readonly<State> = {
         },
         'Master Sergeant': {
             rank: 'Master Sergeant',
+            index: 6,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '9001 – 10000 LINK',
@@ -228,6 +235,7 @@ const InitialState: Readonly<State> = {
         },
         'Sergeant Major': {
             rank: 'Sergeant Major',
+            index: 7,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '10001 – 15000 LINK',
@@ -235,6 +243,7 @@ const InitialState: Readonly<State> = {
         },
         'Second Lieutenant': {
             rank: 'Second Lieutenant',
+            index: 8,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '15001 – 20000 LINK',
@@ -242,6 +251,7 @@ const InitialState: Readonly<State> = {
         },
         'First Lieutenant': {
             rank: 'First Lieutenant',
+            index: 9,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '20001 – 25000 LINK',
@@ -249,6 +259,7 @@ const InitialState: Readonly<State> = {
         },
         'Captain': {
             rank: 'Captain',
+            index: 10,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '25001 – 35000 LINK',
@@ -256,6 +267,7 @@ const InitialState: Readonly<State> = {
         },
         'Major': {
             rank: 'Major',
+            index: 11,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '35001 – 50000 LINK',
@@ -263,6 +275,7 @@ const InitialState: Readonly<State> = {
         },
         'Lieutenant Colonel': {
             rank: 'Lieutenant Colonel',
+            index: 12,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '50001 – 75000 LINK',
@@ -270,6 +283,7 @@ const InitialState: Readonly<State> = {
         },
         'Colonel': {
             rank: 'Colonel',
+            index: 13,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '75001 – 125000 LINK',
@@ -277,6 +291,7 @@ const InitialState: Readonly<State> = {
         },
         'Brigadier General': {
             rank: 'Brigadier General',
+            index: 14,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '125001 – 175000 LINK',
@@ -284,6 +299,7 @@ const InitialState: Readonly<State> = {
         },
         'Major General': {
             rank: 'Major General',
+            index: 15,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '175001 – 250000 LINK',
@@ -291,6 +307,7 @@ const InitialState: Readonly<State> = {
         },
         'Lieutenant General': {
             rank: 'Lieutenant General',
+            index: 16,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '2500001 – 500000 LINK',
@@ -298,6 +315,7 @@ const InitialState: Readonly<State> = {
         },
         'General': {
             rank: 'General',
+            index: 17,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: '500001 + LINK',
@@ -305,6 +323,7 @@ const InitialState: Readonly<State> = {
         },
         'General of Chainlink': {
             rank: 'General of Chainlink',
+            index: 18,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
             linkRange: 'NOT_SET',
@@ -337,7 +356,7 @@ class PRANKApp extends HTMLElement {
 
         try {
             await window.ethereum.request({ method: 'eth_requestAccounts' });
-            this.store.ownerAddress = window.ethereum.selectedAddress;
+            this.store.ownerAddress = window.ethereum.selectedAddress; // TODO make sure this updates appropriately??
             await this.getPranks();
         }
         catch(error) {
@@ -364,6 +383,54 @@ class PRANKApp extends HTMLElement {
         // }
     }
 
+    async advanceClicked(e: any) {
+
+        try {
+            const rank: Rank = e.detail;
+            const prank = this.store.pranks[rank]; // TODO make a Prank type
+    
+            console.log('advanceClicked for rank', rank);
+    
+            await this.connectToMetaMask();
+    
+            // TODO create a transaction to LINK, sending 1 link to the prank contract
+    
+            if (this.store.provider === 'NOT_SET') {
+                alert('The Ethereum provider is not set');
+                throw new Error('The Ethereum provider is not set');
+            }
+    
+            const signer = this.store.provider.getSigner();
+    
+            const linkToken = new ethers.Contract(this.store.linkTokenAddress, [
+                'function totalSupply() public view returns (uint256)',
+                'function balanceOf(address) public view returns (uint256)',
+                'function transferAndCall(address, uint, bytes memory) public returns (bool success)',
+                'function transfer(address _to, uint256 _value) public returns (bool success)'
+            ], signer);
+    
+            const result = await linkToken.transfer(this.store.proofOfRankAddress, '1000000000000000000'); // TODO the way I am using data may be very silly
+            // const result = await linkToken.transferAndCall(this.store.proofOfRankAddress, '1000000000000000000', new Array(prank.index).fill(0)); // TODO the way I am using data may be very silly
+            // const result = await linkToken.balanceOf(this.store.proofOfRankAddress); // TODO the way I am using data may be very silly
+        
+            console.log('result', result);
+        }
+        catch(error) {
+        
+
+            if (error.code && error.message) {
+
+                if (error.code !== 4001) {
+
+                    alert(`Error code: ${error.code}\n\nMessage: ${error.message}`);
+                }
+
+            }
+
+            throw new Error(error);
+        }
+    }
+
     // TODO create mobile layout...simply make the hexagons bigger and change the flex direction to column and add some padding between rows
     render(state: Readonly<State>): Readonly<TemplateResult> {
         const atLeastOnePrankIsSelected: boolean = Object.values(state.pranks).some((prank) => {
@@ -378,6 +445,7 @@ class PRANKApp extends HTMLElement {
 
                 body {
                     margin: 0;
+                    overflow: ${atLeastOnePrankIsSelected === true ? 'hidden' : 'visible'}
                 }
 
                 .prank-app-main-hexagon-column {
@@ -555,6 +623,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Private'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Private'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Private')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
 
                     <prank-hexagon

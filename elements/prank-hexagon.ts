@@ -5,9 +5,10 @@ import {
 } from 'lit-html';
 import { createObjectStore } from 'reduxular';
 import './prank-modal';
+import { Rank } from '../types/index.d';
 
 type State = {
-    readonly rank: string | 'NOT_SET';
+    readonly rank: Rank | 'NOT_SET';
     readonly tokenId: number | 'NOT_SET';
     readonly linkRange: string | 'NOT_SET';
     readonly flipped: boolean;
@@ -215,7 +216,9 @@ class PRANKHexagon extends HTMLElement {
                                 </div>
                                 
                                 <div style="padding-bottom: 1rem">
-                                    <button class="prank-app-hexagon-button" style="font-size: 1.5rem; padding: 1rem">Advance to ${state.rank}</button>
+                                    <button class="prank-app-hexagon-button" style="font-size: 1.5rem; padding: 1rem" @click=${() => this.dispatchEvent(new CustomEvent('advanceclicked', { 
+                                        detail: state.rank
+                                    }))}>Advance to ${state.rank}</button>
                                 </div>
 
                             </div>
