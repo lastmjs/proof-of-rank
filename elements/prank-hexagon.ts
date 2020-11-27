@@ -70,12 +70,11 @@ class PRANKHexagon extends HTMLElement {
                 }
 
                 .prank-app-hexagon-front {
-                    color: grey;
                     background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="346" height="400"><polyline fill="grey" points="173,0 346,100 346,300 173,400 0,300 0,100 173,0" /></svg>');
                 }
 
                 .prank-app-hexagon-front-proof {
-                    color: #375bd2;
+                    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="346" height="400"><polyline fill="%23375bd2" points="173,0 346,100 346,300 173,400 0,300 0,100 173,0" /></svg>');
                 }
 
                 .prank-app-hexagon-back {

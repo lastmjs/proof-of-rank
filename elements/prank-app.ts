@@ -15,12 +15,14 @@ type State = {
     readonly proofOfRankAddress: Address;
     readonly ownerAddress: Address;
     readonly provider: Readonly<ethers.providers.Web3Provider> | 'NOT_SET';
+    readonly intervalId: number;
     readonly pranks: {
         'Private': {
             readonly rank: 'Private';
             readonly index: 0;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '1 – 500 LINK';
             readonly selected: boolean;
         };
@@ -29,6 +31,7 @@ type State = {
             readonly index: 1;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '501 – 1500 LINK';
             readonly selected: boolean;
         };
@@ -37,6 +40,7 @@ type State = {
             readonly index: 2;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '1501 – 3500 LINK';
             readonly selected: boolean;
         };
@@ -45,6 +49,7 @@ type State = {
             readonly index: 3;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '3501 – 5000 LINK';
             readonly selected: boolean;
         };
@@ -53,6 +58,7 @@ type State = {
             readonly index: 4;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '5001 – 7500 LINK';
             readonly selected: boolean;
         };
@@ -61,6 +67,7 @@ type State = {
             readonly index: 5;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '7501 – 9000 LINK';
             readonly selected: boolean;
         };
@@ -69,6 +76,7 @@ type State = {
             readonly index: 6;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '9001 – 10000 LINK';
             readonly selected: boolean;
         };
@@ -77,6 +85,7 @@ type State = {
             readonly index: 7;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '10001 – 15000 LINK';
             readonly selected: boolean;
         };
@@ -85,6 +94,7 @@ type State = {
             readonly index: 8;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '15001 – 20000 LINK';
             readonly selected: boolean;
         };
@@ -93,6 +103,7 @@ type State = {
             readonly index: 9;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '20001 – 25000 LINK';
             readonly selected: boolean;
         };
@@ -101,6 +112,7 @@ type State = {
             readonly index: 10;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '25001 – 35000 LINK';
             readonly selected: boolean;
         };
@@ -109,6 +121,7 @@ type State = {
             readonly index: 11;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '35001 – 50000 LINK';
             readonly selected: boolean;
         };
@@ -117,6 +130,7 @@ type State = {
             readonly index: 12;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '50001 – 75000 LINK';
             readonly selected: boolean;
         };
@@ -125,6 +139,7 @@ type State = {
             readonly index: 13;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '75001 – 125000 LINK';
             readonly selected: boolean;
         };
@@ -133,6 +148,7 @@ type State = {
             readonly index: 14;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '125001 – 175000 LINK';
             readonly selected: boolean;
         };
@@ -141,6 +157,7 @@ type State = {
             readonly index: 15;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '175001 – 250000 LINK';
             readonly selected: boolean;
         };
@@ -149,6 +166,7 @@ type State = {
             readonly index: 16;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '2500001 – 500000 LINK';
             readonly selected: boolean;
         };
@@ -157,6 +175,7 @@ type State = {
             readonly index: 17;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: '500001 + LINK';
             readonly selected: boolean;
         };
@@ -165,6 +184,7 @@ type State = {
             readonly index: 18;
             readonly tokenURI: string | 'NOT_SET';
             readonly tokenId: number | 'NOT_SET';
+            readonly pendingAdvancement: boolean;
             readonly linkRange: 'NOT_SET';
             readonly selected: boolean;
         };
@@ -176,12 +196,14 @@ const InitialState: Readonly<State> = {
     proofOfRankAddress: '0x54421e7a0325cCbf6b8F3A28F9c176C77343b7db', // TODO set this up appropriately for staging and development and production environments
     ownerAddress: '',
     provider: (window as any).ethereum ? new ethers.providers.Web3Provider((window as any).ethereum) : 'NOT_SET', // TODO should we check to make sure that window.ethereum is defined? Yes, yes we should. We do not want this to break on browsers that do not have metamask installed, instead we want to help them to get MetaMask installed
+    intervalId: -1,
     pranks: {
         'Private': {
             rank: 'Private',
             index: 0,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '1 – 500 LINK',
             selected: false
         },
@@ -190,6 +212,7 @@ const InitialState: Readonly<State> = {
             index: 1,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '501 – 1500 LINK',
             selected: false
         },
@@ -198,6 +221,7 @@ const InitialState: Readonly<State> = {
             index: 2,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '1501 – 3500 LINK',
             selected: false
         },
@@ -206,6 +230,7 @@ const InitialState: Readonly<State> = {
             index: 3,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '3501 – 5000 LINK',
             selected: false
         },
@@ -214,6 +239,7 @@ const InitialState: Readonly<State> = {
             index: 4,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '5001 – 7500 LINK',
             selected: false
         },
@@ -222,6 +248,7 @@ const InitialState: Readonly<State> = {
             index: 5,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '7501 – 9000 LINK',
             selected: false
         },
@@ -230,6 +257,7 @@ const InitialState: Readonly<State> = {
             index: 6,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '9001 – 10000 LINK',
             selected: false
         },
@@ -238,6 +266,7 @@ const InitialState: Readonly<State> = {
             index: 7,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '10001 – 15000 LINK',
             selected: false
         },
@@ -246,6 +275,7 @@ const InitialState: Readonly<State> = {
             index: 8,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '15001 – 20000 LINK',
             selected: false
         },
@@ -254,6 +284,7 @@ const InitialState: Readonly<State> = {
             index: 9,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '20001 – 25000 LINK',
             selected: false
         },
@@ -262,6 +293,7 @@ const InitialState: Readonly<State> = {
             index: 10,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '25001 – 35000 LINK',
             selected: false
         },
@@ -270,6 +302,7 @@ const InitialState: Readonly<State> = {
             index: 11,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '35001 – 50000 LINK',
             selected: false
         },
@@ -278,6 +311,7 @@ const InitialState: Readonly<State> = {
             index: 12,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '50001 – 75000 LINK',
             selected: false
         },
@@ -286,6 +320,7 @@ const InitialState: Readonly<State> = {
             index: 13,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '75001 – 125000 LINK',
             selected: false
         },
@@ -294,6 +329,7 @@ const InitialState: Readonly<State> = {
             index: 14,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '125001 – 175000 LINK',
             selected: false
         },
@@ -302,6 +338,7 @@ const InitialState: Readonly<State> = {
             index: 15,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '175001 – 250000 LINK',
             selected: false
         },
@@ -310,6 +347,7 @@ const InitialState: Readonly<State> = {
             index: 16,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '2500001 – 500000 LINK',
             selected: false
         },
@@ -318,6 +356,7 @@ const InitialState: Readonly<State> = {
             index: 17,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: '500001 + LINK',
             selected: false
         },
@@ -326,6 +365,7 @@ const InitialState: Readonly<State> = {
             index: 18,
             tokenURI: 'NOT_SET',
             tokenId: 'NOT_SET',
+            pendingAdvancement: false,
             linkRange: 'NOT_SET',
             selected: false
         }
@@ -341,22 +381,54 @@ class PRANKApp extends HTMLElement {
 
         this.store.ownerAddress = (window as any).ethereum?.selectedAddress === null || (window as any).ethereum?.selectedAddress === undefined ? '' : (window as any).ethereum.selectedAddress;
 
-        if (this.store.ownerAddress !== '') {
+        if (
+            this.store.ownerAddress !== '' &&
+            this.store.provider !== 'NOT_SET'
+        ) {
             this.getPranks();
         }
     }
 
-    // TODO get the pranks for this user
-    // TODO make sure to update the pranks one at a time, since we'll have to do quite a few requests to get everything
     async getPranks() {
+        if (this.store.provider === 'NOT_SET') {
+            alert('The Ethereum provider is not set');
+            throw new Error('The Ethereum provider is not set');
+        }
 
+        const ProofOfRank: Readonly<ethers.Contract> = new ethers.Contract(this.store.proofOfRankAddress, [
+            'function balanceOf(address owner) public view returns (uint256)',
+            'function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256)',
+            'function prankConfigsForTokenIds(uint256) public view returns (string)'
+        ], this.store.provider);
+
+        const ownerBalanceBigNumber = await ProofOfRank.balanceOf(this.store.ownerAddress);
+        const ownerBalanceInt: number = parseInt(ownerBalanceBigNumber);
+
+        const tokenPromises = new Array(ownerBalanceInt).fill(0).map(async (_, index: number) => {
+            const tokenId = await ProofOfRank.tokenOfOwnerByIndex(this.store.ownerAddress, index);
+
+            const token = await ProofOfRank.prankConfigsForTokenIds(tokenId);
+
+            console.log('token', token);
+
+            this.store.pranks = {
+                ...this.store.pranks,
+                [token]: {
+                    ...this.store.pranks[token],
+                    tokenId: parseInt(tokenId),
+                    pendingAdvancement: false
+                }
+            };
+
+            return token;
+        });
     }
 
     async connectToMetaMask() {
 
         try {
-            await window.ethereum.request({ method: 'eth_requestAccounts' });
-            this.store.ownerAddress = window.ethereum.selectedAddress; // TODO make sure this updates appropriately??
+            await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
+            this.store.ownerAddress = (window as any).ethereum.selectedAddress; // TODO make sure this updates appropriately??
             await this.getPranks();
         }
         catch(error) {
@@ -389,8 +461,6 @@ class PRANKApp extends HTMLElement {
             const rank: Rank = e.detail;
             const prank = this.store.pranks[rank]; // TODO make a Prank type
     
-            console.log('advanceClicked for rank', rank);
-    
             await this.connectToMetaMask();
     
             // TODO create a transaction to LINK, sending 1 link to the prank contract
@@ -402,18 +472,24 @@ class PRANKApp extends HTMLElement {
     
             const signer = this.store.provider.getSigner();
     
-            const linkToken = new ethers.Contract(this.store.linkTokenAddress, [
+            const LinkToken: Readonly<ethers.Contract> = new ethers.Contract(this.store.linkTokenAddress, [
                 'function totalSupply() public view returns (uint256)',
                 'function balanceOf(address) public view returns (uint256)',
                 'function transferAndCall(address, uint, bytes memory) public returns (bool success)',
                 'function transfer(address _to, uint256 _value) public returns (bool success)'
             ], signer);
     
-            const result = await linkToken.transfer(this.store.proofOfRankAddress, '1000000000000000000'); // TODO the way I am using data may be very silly
-            // const result = await linkToken.transferAndCall(this.store.proofOfRankAddress, '1000000000000000000', new Array(prank.index).fill(0)); // TODO the way I am using data may be very silly
+            // const result = await linkToken.transfer(this.store.proofOfRankAddress, '1000000000000000000'); // TODO the way I am using data may be very silly
+            const result = await LinkToken.transferAndCall(this.store.proofOfRankAddress, '1000000000000000000', new Array(prank.index).fill(0)); // TODO the way I am using data may be very silly
             // const result = await linkToken.balanceOf(this.store.proofOfRankAddress); // TODO the way I am using data may be very silly
         
-            console.log('result', result);
+            this.store.pranks = {
+                ...this.store.pranks,
+                [rank]: {
+                    ...this.store.pranks[rank],
+                    pendingAdvancement: true
+                }
+            };
         }
         catch(error) {
         
@@ -433,9 +509,32 @@ class PRANKApp extends HTMLElement {
 
     // TODO create mobile layout...simply make the hexagons bigger and change the flex direction to column and add some padding between rows
     render(state: Readonly<State>): Readonly<TemplateResult> {
+
         const atLeastOnePrankIsSelected: boolean = Object.values(state.pranks).some((prank) => {
             return prank.selected === true;
         });
+
+        const atLastOnePrankIsPendingAdvancement: boolean = Object.values(state.pranks).some((prank) => {
+            return prank.pendingAdvancement === true;
+        });
+
+        if (
+            atLastOnePrankIsPendingAdvancement === true &&
+            this.store.intervalId === -1
+        ) {
+            this.store.intervalId = setInterval(() => {
+                console.log('running getPranks from within setInterval');
+                this.getPranks();
+            }, 5000);
+        }
+
+        if (
+            atLastOnePrankIsPendingAdvancement === false &&
+            this.store.intervalId !== -1
+        ) {
+            clearInterval(this.store.intervalId);
+            this.store.intervalId = -1;
+        }
 
         return html`
             <style>
@@ -478,6 +577,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['General of Chainlink'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['General of Chainlink'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('General of Chainlink')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
                 </div>
 
@@ -489,6 +589,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Brigadier General'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Brigadier General'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Brigadier General')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
 
                     <prank-hexagon
@@ -498,6 +599,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Major General'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Major General'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Major General')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
 
                     <prank-hexagon
@@ -507,6 +609,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Lieutenant General'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Lieutenant General'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Lieutenant General')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
 
                     <prank-hexagon
@@ -516,6 +619,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['General'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['General'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('General')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
                 </div>
 
@@ -527,6 +631,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Major'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Major'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Major')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
 
                     <prank-hexagon
@@ -536,6 +641,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Lieutenant Colonel'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Lieutenant Colonel'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Lieutenant Colonel')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
 
                     <prank-hexagon
@@ -545,6 +651,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Colonel'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Colonel'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Colonel')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
                 </div>
 
@@ -556,6 +663,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Sergeant Major'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Sergeant Major'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Sergeant Major')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
 
                     <prank-hexagon
@@ -565,6 +673,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Second Lieutenant'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Second Lieutenant'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Second Lieutenant')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
 
                     <prank-hexagon
@@ -574,6 +683,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['First Lieutenant'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['First Lieutenant'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('First Lieutenant')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
 
                     <prank-hexagon
@@ -583,6 +693,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Captain'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Captain'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Captain')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
                 </div>
 
@@ -594,6 +705,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Staff Sergeant'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Staff Sergeant'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Staff Sergeant')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
 
                     <prank-hexagon
@@ -603,6 +715,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Sergeant First Class'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Sergeant First Class'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Sergeant First Class')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
 
                     <prank-hexagon
@@ -612,6 +725,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Master Sergeant'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Master Sergeant'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Master Sergeant')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
                 </div>
 
@@ -633,6 +747,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Specialist'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Specialist'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Specialist')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
 
                     <prank-hexagon
@@ -642,6 +757,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Corporal'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Corporal'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Corporal')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
 
                     <prank-hexagon
@@ -651,6 +767,7 @@ class PRANKApp extends HTMLElement {
                         .selected=${state.pranks['Sergeant'].selected}
                         .anotherPrankIsSelected=${atLeastOnePrankIsSelected && state.pranks['Sergeant'].selected === false }
                         @hexagon-click=${() => this.hexagonClick('Sergeant')}
+                        @advanceclicked=${(e: any) => this.advanceClicked(e)}
                     ></prank-hexagon>
                 </div>
             </div>
@@ -659,21 +776,3 @@ class PRANKApp extends HTMLElement {
 }
 
 window.customElements.define('prank-app', PRANKApp);
-
-// (async () => {
-//     const provider: Readonly<ethers.providers.BaseProvider> = new ethers.providers.JsonRpcProvider('http://localhost:8545');
-
-//     const linkToken = new ethers.Contract('0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA', [
-//         'function totalSupply() public view returns (uint256)',
-//         'function balanceOf(address) public view returns (uint256)'
-//     ], provider);
-
-//     const totalSupply = await linkToken.totalSupply();
-
-//     console.log('totalSupply', totalSupply.toString());
-
-//     const result = await linkToken.balanceOf('0x54421e7a0325cCbf6b8F3A28F9c176C77343b7db')
-
-
-//     console.log(result.toString())
-// })();
