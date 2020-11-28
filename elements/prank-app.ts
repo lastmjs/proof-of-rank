@@ -565,11 +565,49 @@ class PRANKApp extends HTMLElement {
                 prank-hexagon {
                     padding: 1rem;
                 }
+
+                .top-bar-container {
+                    padding-bottom: 2.5rem;
+                    width: 100%;
+                }
+
+                .top-bar {
+                    padding: 2rem;
+                    border-bottom: solid 1px rgba(1, 1, 1, .1);
+                    box-sizing: border-box;
+                    width: 100%;
+                    display: flex;
+                }
+
+                .proof-of-rank-text {
+                    font-weight: bold;
+                    font-family: sans-serif;
+                    font-size: 1rem;
+                    padding-left: 1rem;
+                    padding-right: 1rem;
+                    cursor: pointer;
+                }
+
+                .proof-of-rank-text > a {
+                    text-decoration: none;
+                    color: inherit;
+                }
             </style>
 
             <button @click=${() => this.connectToMetaMask()} ?hidden=${state.ownerAddress !== ''}>Connect to MetaMask</button>
 
             <div class="prank-app-main-hexagon-column">
+                <div class="top-bar-container">
+                    <div class="top-bar">
+                        <div class="proof-of-rank-text">
+                            <a href="/">Proof of Rank</a>
+                        </div>
+                        <div class="proof-of-rank-text">About</div>
+                        <div class="proof-of-rank-text">Open Source</div>
+                        <div style="margin-left: auto; font-family: sans-serif">Inspired by Chainlink Ecosystem's <a href="https://chainlinkecosystem.com/ranks/" target="_blank">LINK Marine Ranks</a>, and special thanks to <a href="https://twitter.com/chainlink_alert" target="_blank">@chainlink_alert</a></div>
+                    </div>
+                </div>
+
                 <div class="prank-app-hexagon-row">
                     <prank-hexagon
                         .rank=${state.pranks['General of Chainlink'].rank}
