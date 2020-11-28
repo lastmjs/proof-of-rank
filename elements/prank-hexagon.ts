@@ -47,8 +47,6 @@ class PRANKHexagon extends HTMLElement {
         return html`
             <style>
                 .prank-app-hexagon-scene {
-                    width: 346px;
-                    height: 400px;
                     transition: width .5s linear;
                     transition: height .5s linear;
                     perspective: 1000px;
@@ -130,8 +128,8 @@ class PRANKHexagon extends HTMLElement {
                 .prank-app-hexagon-selected {
                     background: none;
                     background-color: black;
-                    width: 500px;
-                    height: 500px;
+                    width: 750px;
+                    height: 750px;
                 }
 
                 .insignia {
@@ -147,14 +145,20 @@ class PRANKHexagon extends HTMLElement {
 
             <div
                 class="prank-app-hexagon-scene"
-                style="opacity: ${state.anotherPrankIsSelected === true ? '0' : '1'}"
+                style="opacity: ${state.anotherPrankIsSelected === true ? '0' : '1'}; width: ${state.selected === false ? '346px' : '750px'}; height: ${state.selected === false ? '400px' : '750px'};"
                 @mouseover=${() => {
-                    if (this.store.selected === false) {
+                    if (
+                        this.store.selected === false &&
+                        this.store.tokenId === 'NOT_SET'
+                    ) {
                         this.store.flipped = true;
                     }
                 }}
                 @mouseout=${() => {
-                    if (this.store.selected === false) {
+                    if (
+                        this.store.selected === false &&
+                        this.store.tokenId === 'NOT_SET'
+                    ) {
                         this.store.flipped = false;
                     }
                 }}
@@ -192,7 +196,7 @@ class PRANKHexagon extends HTMLElement {
                     >
                         <div
                             class="prank-app-hexagon-text-container ${state.tokenId === 'NOT_SET' ? '' : 'prank-app-proof-hexagon-text'}"
-                            style="width: ${state.selected === true ? '500px' : '346px'}; height: ${state.selected === true ? '500px': '400px'}; display: flex; flex-direction: column; align-items: center; ${state.selected === true ? '' : 'justify-content: center'}"
+                            style="width: ${state.selected === true ? '750px' : '346px'}; height: ${state.selected === true ? '750px': '400px'}; display: flex; flex-direction: column; align-items: center; ${state.selected === true ? '' : 'justify-content: center'}"
                         >
                             <div ?hidden=${state.selected}>
                                 <button
@@ -210,36 +214,52 @@ class PRANKHexagon extends HTMLElement {
 
                                     <div style="padding-bottom: 1rem">You are about to obtain your Proof of Rank in the Brotherhood of LINK Marines</div>
                                     
-                                    <hr>
+                                    <hr style="width: 100%">
 
                                     <div style="padding-top: 1rem; padding-bottom: 1rem">Please certify the following:</div>
                                     
-                                    <div style="display: flex">
-                                        <div style="flex: 1">
-                                            <input type="checkbox">
-                                            <input type="checkbox">
-                                            <input type="checkbox">
-                                            <input type="checkbox">
-                                        </div>
-                                        
-                                        <div style="flex: 10">
-                                            <div>
-                                                ${state.rank === 'General of Chainlink' ? 'I am the General of Chainlink' : `The wallet currently connected through MetaMask holds between ${state.linkRange} inclusive`}
+                                    <div style="display: flex; width: 100%; text-align: left">
+                                        <div style="width: 100%">
+                                            <div style="width: 100%; display: flex; padding-bottom: 1rem">
+                                                <div style="padding-right: 1rem">
+                                                    <input type="checkbox">
+                                                </div>
+                                                <div>
+                                                    ${state.rank === 'General of Chainlink' ? 'I am the General of Chainlink' : `The wallet currently connected through MetaMask holds between ${state.linkRange} inclusive`}
+                                                </div>
                                             </div>
 
-                                            <div>
-                                                I am purchasing 1 PRANK token for the price of 1 LINK token
+                                            <div style="width: 100%; display: flex; padding-bottom: 1rem">
+                                                <div style="padding-right: 1rem">
+                                                    <input type="checkbox">
+                                                </div>
+
+                                                <div>
+                                                    I am purchasing 1 PRANK token for the price of 1 LINK token
+                                                </div>
                                             </div>
 
-                                            <div>
-                                                The Proof of Rank website and PRANK tokens are offered to me under the terms of the <a href="https://github.com/lastmjs/proof-of-rank/blob/master/LICENSE" target="_blank">MIT license</a>. There is no warranty of any kind. I am using this software at my own risk
+                                            <div style="width: 100%; display: flex; padding-bottom: 1rem">
+                                                <div style="padding-right: 1rem">
+                                                    <input type="checkbox">
+                                                </div>
+
+                                                <div>
+                                                    The Proof of Rank website and PRANK tokens are offered to me under the terms of the <a href="https://github.com/lastmjs/proof-of-rank/blob/master/LICENSE" target="_blank">MIT license</a>. There is no warranty of any kind. I am using this software at my own risk
+                                                </div>
                                             </div>
 
-                                            <div>
-                                                I am not in a country nor am I a person that is sanctioned by the United States
+                                            <div style="width: 100%; display: flex; padding-bottom: 1rem">
+                                                <div style="padding-right: 1rem">
+                                                    <input type="checkbox">
+                                                </div>
+                                                
+                                                <div>
+                                                    I am not in a country nor am I a person that is sanctioned by the United States
+                                                </div>
                                             </div>
 
-                                            <div>
+                                            <div style="width: 100%; display: flex; justify-content: center; padding-top: 1rem">
                                                 <button class="prank-app-hexagon-button" style="font-size: 1.5rem; padding: 1rem" @click=${() => this.dispatchEvent(new CustomEvent('advanceclicked', { 
                                                     detail: state.rank
                                                 }))}>Advance to ${state.rank}</button>
