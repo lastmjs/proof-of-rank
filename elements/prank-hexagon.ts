@@ -133,6 +133,16 @@ class PRANKHexagon extends HTMLElement {
                     width: 500px;
                     height: 500px;
                 }
+
+                .insignia {
+                    filter: sepia(100%) blur(5px);
+                }
+
+                .insignia-proof {
+                    padding: 1rem;
+                    border-radius: 100%;
+                    box-shadow: 0px 0px 5px black;
+                }
             </style>
 
             <div
@@ -170,6 +180,10 @@ class PRANKHexagon extends HTMLElement {
                             >
                                 ${state.linkRange === 'NOT_SET' ? '' : state.linkRange}
                             </div>
+
+                            <div style="padding: 2rem">
+                                <img class="${state.tokenId === 'NOT_SET' ? 'insignia' : 'insignia-proof'}" style="max-height: 100px; max-width: 250px" src="/insignia/${state.rank.toLowerCase().replace(/ /g, '-')}.svg">
+                            </div>
                         </div>
                     </div>
 
@@ -189,36 +203,56 @@ class PRANKHexagon extends HTMLElement {
                                 </button>
                             </div>
 
-                            <div ?hidden=${!state.selected} style="word-spacing: 0; padding: 5rem; overflow-y: scroll">
+                            <div ?hidden=${!state.selected} style="word-spacing: 0; padding: 5rem; overflow-y: scroll;">
                                 <button class="prank-app-hexagon-button" style="position: absolute; top: 1rem; left: 1rem" @click=${() => this.dispatchEvent(new CustomEvent('hexagon-click'))}>cancel</button>
                             
-                                <div style="padding-bottom: 1rem">You are about to obtain your Proof of Rank in the Brotherhood of LINK Marines</div>
-                                
-                                <hr>
+                                <div style="display: flex; flex-direction: column">
 
-                                <div style="padding-top: 1rem; padding-bottom: 1rem">Please certify the following:</div>
-                                
-                                <div style="padding-bottom: 1rem">
-                                    <input type="checkbox"> ${state.rank === 'General of Chainlink' ? 'I am the General of Chainlink' : `I own between ${state.linkRange} inclusive`}
+                                    <div style="padding-bottom: 1rem">You are about to obtain your Proof of Rank in the Brotherhood of LINK Marines</div>
+                                    
+                                    <hr>
+
+                                    <div style="padding-top: 1rem; padding-bottom: 1rem">Please certify the following:</div>
+                                    
+                                    <div style="display: flex">
+                                        <div style="flex: 1">
+                                            <input type="checkbox">
+                                            <input type="checkbox">
+                                            <input type="checkbox">
+                                            <input type="checkbox">
+                                        </div>
+                                        
+                                        <div style="flex: 10">
+                                            <div>
+                                                ${state.rank === 'General of Chainlink' ? 'I am the General of Chainlink' : `The wallet currently connected through MetaMask holds between ${state.linkRange} inclusive`}
+                                            </div>
+
+                                            <div>
+                                                I am purchasing 1 PRANK token for the price of 1 LINK token
+                                            </div>
+
+                                            <div>
+                                                The Proof of Rank website and PRANK tokens are offered to me under the terms of the <a href="https://github.com/lastmjs/proof-of-rank/blob/master/LICENSE" target="_blank">MIT license</a>. There is no warranty of any kind. I am using this software at my own risk
+                                            </div>
+
+                                            <div>
+                                                I am not in a country nor am I a person that is sanctioned by the United States
+                                            </div>
+
+                                            <div>
+                                                <button class="prank-app-hexagon-button" style="font-size: 1.5rem; padding: 1rem" @click=${() => this.dispatchEvent(new CustomEvent('advanceclicked', { 
+                                                    detail: state.rank
+                                                }))}>Advance to ${state.rank}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    
                                 </div>
 
-                                <div style="padding-bottom: 1rem">
-                                    <input type="checkbox"> I am purchasing 1 PRANK token for the price of 1 LINK token
-                                </div>
-
-                                <div style="padding-bottom: 1rem">
-                                    <input type="checkbox"> The Proof of Rank website and PRANK tokens are offered to me under the terms of the <a href="https://github.com/lastmjs/proof-of-rank/blob/master/LICENSE" target="_blank">MIT license</a>. There is no warranty of any kind. I am using this software at my own risk
-                                </div>
-
-                                <div style="padding-bottom: 3rem">
-                                    <input type="checkbox"> I am not in a country nor am I a person that is sanctioned by the United States
-                                </div>
-                                
-                                <div style="padding-bottom: 1rem">
-                                    <button class="prank-app-hexagon-button" style="font-size: 1.5rem; padding: 1rem" @click=${() => this.dispatchEvent(new CustomEvent('advanceclicked', { 
-                                        detail: state.rank
-                                    }))}>Advance to ${state.rank}</button>
-                                </div>
 
                             </div>
                         </div>

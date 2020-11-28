@@ -544,7 +544,8 @@ class PRANKApp extends HTMLElement {
 
                 body {
                     margin: 0;
-                    overflow: ${atLeastOnePrankIsSelected === true ? 'hidden' : 'visible'}
+                    overflow: ${atLeastOnePrankIsSelected === true ? 'hidden' : 'visible'};
+                    background-image: linear-gradient(to top left, #375bd2, white);
                 }
 
                 .prank-app-main-hexagon-column {
